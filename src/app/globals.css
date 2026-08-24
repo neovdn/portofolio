@@ -1,26 +1,82 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #111111;
+  --color-brand-bg: #F5F5F3;
+  --color-brand-surface: #EBEBE8;
+  --color-brand-card: #FFFFFF;
+  --color-brand-muted: #737373;
+  --color-brand-border: #D9D9D9;
+  --color-brand-border-dark: #B5B5B2;
+  --color-brand-accent: #10B981;
+
+  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #F5F5F3;
+  --fg: #111111;
+  --muted: #737373;
+  --border: #D9D9D9;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  background-color: #F5F5F3;
+  color: #111111;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #F5F5F3;
+  color: #111111;
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: #111111;
+  color: #F5F5F3;
+}
+
+/* Custom editorial scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F5F5F3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D9D9D9;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #737373;
+}
+
+/* Subtle noise texture background */
+.editorial-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(17, 17, 17, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.03) 1px, transparent 1px);
+}
+
+/* Card 3D perspective wrapper */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
 }

@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" width="100%" height="100%" fill="none">
+  <!-- Background -->
+  <rect width="1000" height="500" rx="8" fill="#FDFCFA" stroke="#D9D9D9" stroke-width="1" />
+  
+  <text x="40" y="44" fill="#111111" font-family="sans-serif" font-size="16" font-weight="700">RoomMaster Multi-Tool Agentic Architecture</text>
+  <text x="40" y="66" fill="#737373" font-family="monospace" font-size="11">SYSTEM FLOW: CLIENT → REASONING AGENT → DETERMINISTIC TOOLS → DATABASE</text>
+
+  <!-- 4 Architectural Blocks -->
+  
+  <!-- Block 1: Front-Desk Client -->
+  <g transform="translate(40, 100)">
+    <rect width="190" height="340" rx="8" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1.5" />
+    <rect width="190" height="36" rx="8" fill="#F5F5F3" stroke="#D9D9D9" stroke-width="1" />
+    <text x="16" y="23" fill="#111111" font-family="monospace" font-size="11" font-weight="700">01 / CLIENT LAYER</text>
+    
+    <text x="16" y="65" fill="#111111" font-family="sans-serif" font-size="13" font-weight="600">Next.js UI Dashboard</text>
+    <text x="16" y="85" fill="#737373" font-family="sans-serif" font-size="11">Front-desk interactive room grid &amp; reservation manager</text>
+    
+    <rect x="16" y="130" width="158" height="50" rx="4" fill="#F5F5F3" />
+    <text x="24" y="152" fill="#111111" font-family="monospace" font-size="10">Natural Language</text>
+    <text x="24" y="168" fill="#737373" font-family="monospace" font-size="10">Operator Prompts</text>
+
+    <rect x="16" y="200" width="158" height="50" rx="4" fill="#F5F5F3" />
+    <text x="24" y="222" fill="#111111" font-family="monospace" font-size="10">Real-time WebSockets</text>
+    <text x="24" y="238" fill="#737373" font-family="monospace" font-size="10">Instant UI updates</text>
+    
+    <rect x="16" y="270" width="158" height="46" rx="4" fill="#111111" />
+    <text x="24" y="294" fill="#FFFFFF" font-family="monospace" font-size="10" font-weight="600">Human-in-the-Loop</text>
+    <text x="24" y="308" fill="#B5B5B2" font-family="monospace" font-size="9">Confirmation gate</text>
+  </g>
+
+  <!-- Arrow 1 to 2 -->
+  <line x1="230" y1="270" x2="280" y2="270" stroke="#111111" stroke-width="2" marker-end="url(#arrow)" />
+  <polygon points="280,270 270,265 270,275" fill="#111111" />
+
+  <!-- Block 2: Agent Orchestration Layer -->
+  <g transform="translate(285, 100)">
+    <rect width="200" height="340" rx="8" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1.5" />
+    <rect width="200" height="36" rx="8" fill="#F5F5F3" stroke="#D9D9D9" stroke-width="1" />
+    <text x="16" y="23" fill="#111111" font-family="monospace" font-size="11" font-weight="700">02 / AGENT LAYER</text>
+
+    <text x="16" y="65" fill="#111111" font-family="sans-serif" font-size="13" font-weight="600">LangChain ReAct Loop</text>
+    <text x="16" y="85" fill="#737373" font-family="sans-serif" font-size="11">State machine for decomposition &amp; self-correction</text>
+
+    <rect x="16" y="125" width="168" height="58" rx="4" fill="#F5F5F3" />
+    <text x="24" y="145" fill="#111111" font-family="monospace" font-size="10" font-weight="600">Thought Engine</text>
+    <text x="24" y="161" fill="#737373" font-family="monospace" font-size="9">OpenAI GPT-4 Turbo</text>
+    <text x="24" y="173" fill="#737373" font-family="monospace" font-size="9">Context &amp; Session Memory</text>
+
+    <rect x="16" y="195" width="168" height="60" rx="4" fill="#F5F5F3" />
+    <text x="24" y="215" fill="#111111" font-family="monospace" font-size="10" font-weight="600">Action Parser</text>
+    <text x="24" y="231" fill="#737373" font-family="monospace" font-size="9">Strict JSON Schemas</text>
+    <text x="24" y="243" fill="#737373" font-family="monospace" font-size="9">Deterministic Tool Calls</text>
+
+    <rect x="16" y="265" width="168" height="50" rx="4" fill="#F5F5F3" />
+    <text x="24" y="285" fill="#111111" font-family="monospace" font-size="10" font-weight="600">Observation Evaluator</text>
+    <text x="24" y="301" fill="#737373" font-family="monospace" font-size="9">Validates tool returns</text>
+  </g>
+
+  <!-- Arrow 2 to 3 -->
+  <line x1="485" y1="270" x2="535" y2="270" stroke="#111111" stroke-width="2" />
+  <polygon points="535,270 525,265 525,275" fill="#111111" />
+
+  <!-- Block 3: Tool Execution Suite -->
+  <g transform="translate(540, 100)">
+    <rect width="200" height="340" rx="8" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1.5" />
+    <rect width="200" height="36" rx="8" fill="#F5F5F3" stroke="#D9D9D9" stroke-width="1" />
+    <text x="16" y="23" fill="#111111" font-family="monospace" font-size="11" font-weight="700">03 / TOOL SUITE</text>
+
+    <text x="16" y="65" fill="#111111" font-family="sans-serif" font-size="13" font-weight="600">Discrete TypeScript Tools</text>
+    <text x="16" y="85" fill="#737373" font-family="sans-serif" font-size="11">Type-safe operational functions</text>
+
+    <rect x="16" y="115" width="168" height="42" rx="4" fill="#F5F5F3" />
+    <text x="24" y="134" fill="#111111" font-family="monospace" font-size="10">check_availability()</text>
+    <text x="24" y="148" fill="#737373" font-family="monospace" font-size="9">Room vacancy verification</text>
+
+    <rect x="16" y="165" width="168" height="42" rx="4" fill="#F5F5F3" />
+    <text x="24" y="184" fill="#111111" font-family="monospace" font-size="10">modify_reservation()</text>
+    <text x="24" y="198" fill="#737373" font-family="monospace" font-size="9">Safe date &amp; room shifts</text>
+
+    <rect x="16" y="215" width="168" height="42" rx="4" fill="#F5F5F3" />
+    <text x="24" y="234" fill="#111111" font-family="monospace" font-size="10">calculate_pricing()</text>
+    <text x="24" y="248" fill="#737373" font-family="monospace" font-size="9">Dynamic rate computation</text>
+
+    <rect x="16" y="265" width="168" height="42" rx="4" fill="#F5F5F3" />
+    <text x="24" y="284" fill="#111111" font-family="monospace" font-size="10">dispatch_service()</text>
+    <text x="24" y="298" fill="#737373" font-family="monospace" font-size="9">Housekeeping tasks</text>
+  </g>
+
+  <!-- Arrow 3 to 4 -->
+  <line x1="740" y1="270" x2="790" y2="270" stroke="#111111" stroke-width="2" />
+  <polygon points="790,270 780,265 780,275" fill="#111111" />
+
+  <!-- Block 4: Supabase & PostgreSQL -->
+  <g transform="translate(795, 100)">
+    <rect width="165" height="340" rx="8" fill="#111111" stroke="#333333" stroke-width="1.5" />
+    <rect width="165" height="36" rx="8" fill="#1E1E1E" />
+    <text x="14" y="23" fill="#FFFFFF" font-family="monospace" font-size="11" font-weight="700">04 / DATABASE</text>
+
+    <text x="14" y="65" fill="#FFFFFF" font-family="sans-serif" font-size="13" font-weight="600">Supabase DB</text>
+    <text x="14" y="85" fill="#A3A3A3" font-family="sans-serif" font-size="11">PostgreSQL engine with ACID guarantees</text>
+
+    <rect x="14" y="125" width="137" height="46" rx="4" fill="#242424" />
+    <text x="22" y="145" fill="#FFFFFF" font-family="monospace" font-size="10">Row-Level Security</text>
+    <text x="22" y="161" fill="#10B981" font-family="monospace" font-size="9">Tenant isolation</text>
+
+    <rect x="14" y="180" width="137" height="46" rx="4" fill="#242424" />
+    <text x="22" y="200" fill="#FFFFFF" font-family="monospace" font-size="10">Atomic Locks</text>
+    <text x="22" y="216" fill="#A3A3A3" font-family="monospace" font-size="9">Zero double-booking</text>
+
+    <rect x="14" y="235" width="137" height="46" rx="4" fill="#242424" />
+    <text x="22" y="255" fill="#FFFFFF" font-family="monospace" font-size="10">Audit Log Engine</text>
+    <text x="22" y="271" fill="#A3A3A3" font-family="monospace" font-size="9">Immutable traces</text>
+  </g>
+</svg>

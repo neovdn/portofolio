@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%" fill="none">
+  <!-- Background -->
+  <rect width="1200" height="750" fill="#EBEBE8" />
+  
+  <!-- Subtle Grid -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#D9D9D9" stroke-width="1" />
+  </pattern>
+  <rect width="1200" height="750" fill="url(#grid)" opacity="0.6" />
+
+  <!-- Main Dashboard Frame -->
+  <g transform="translate(100, 75)">
+    <!-- Outer Card / Window -->
+    <rect width="1000" height="600" rx="12" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1.5" filter="drop-shadow(0 20px 30px rgba(0,0,0,0.04))" />
+    
+    <!-- Window Header -->
+    <rect width="1000" height="48" rx="12" fill="#F9F9F8" stroke="#D9D9D9" stroke-width="1" />
+    <circle cx="28" cy="24" r="5" fill="#D9D9D9" />
+    <circle cx="44" cy="24" r="5" fill="#D9D9D9" />
+    <circle cx="60" cy="24" r="5" fill="#D9D9D9" />
+    <text x="500" y="30" fill="#737373" font-family="monospace" font-size="12" font-weight="500" text-anchor="middle">ROOMMASTER PMS · AGENTIC CO-PILOT V2.4</text>
+    
+    <!-- Sidebar Navigation -->
+    <rect x="0" y="48" width="220" height="552" fill="#FDFCFA" stroke="#D9D9D9" stroke-width="1" />
+    
+    <!-- Sidebar Items -->
+    <rect x="16" y="72" width="188" height="32" rx="6" fill="#111111" />
+    <text x="36" y="93" fill="#F5F5F3" font-family="sans-serif" font-size="12" font-weight="600">Overview &amp; Grid</text>
+    
+    <rect x="16" y="112" width="188" height="32" rx="6" fill="transparent" />
+    <text x="36" y="133" fill="#737373" font-family="sans-serif" font-size="12" font-weight="500">Reservations</text>
+    
+    <rect x="16" y="152" width="188" height="32" rx="6" fill="transparent" />
+    <text x="36" y="173" fill="#737373" font-family="sans-serif" font-size="12" font-weight="500">Guest Profiles</text>
+    
+    <rect x="16" y="192" width="188" height="32" rx="6" fill="transparent" />
+    <text x="36" y="213" fill="#737373" font-family="sans-serif" font-size="12" font-weight="500">Housekeeping</text>
+    
+    <rect x="16" y="232" width="188" height="32" rx="6" fill="transparent" />
+    <text x="36" y="253" fill="#737373" font-family="sans-serif" font-size="12" font-weight="500">Audit Logs</text>
+    
+    <!-- AI Status Indicator in Sidebar -->
+    <rect x="16" y="520" width="188" height="60" rx="8" fill="#F5F5F3" stroke="#D9D9D9" stroke-width="1" />
+    <circle cx="34" cy="542" r="4" fill="#10B981" />
+    <text x="46" y="546" fill="#111111" font-family="sans-serif" font-size="11" font-weight="600">ReAct Agent Online</text>
+    <text x="34" y="566" fill="#737373" font-family="monospace" font-size="10">Model: GPT-4 Turbo</text>
+
+    <!-- Main Content Area: Room Matrix -->
+    <g transform="translate(240, 68)">
+      <!-- Metric Cards -->
+      <g transform="translate(0, 0)">
+        <rect width="230" height="74" rx="8" fill="#FDFCFA" stroke="#D9D9D9" stroke-width="1" />
+        <text x="16" y="26" fill="#737373" font-family="sans-serif" font-size="11" font-weight="500">Total Occupancy</text>
+        <text x="16" y="56" fill="#111111" font-family="sans-serif" font-size="22" font-weight="700">84.2%</text>
+        <text x="170" y="56" fill="#737373" font-family="monospace" font-size="11">42 / 50</text>
+      </g>
+      
+      <g transform="translate(246, 0)">
+        <rect width="230" height="74" rx="8" fill="#FDFCFA" stroke="#D9D9D9" stroke-width="1" />
+        <text x="16" y="26" fill="#737373" font-family="sans-serif" font-size="11" font-weight="500">Today's Check-ins</text>
+        <text x="16" y="56" fill="#111111" font-family="sans-serif" font-size="22" font-weight="700">14</text>
+        <text x="165" y="56" fill="#737373" font-family="monospace" font-size="11">11 Done</text>
+      </g>
+      
+      <g transform="translate(492, 0)">
+        <rect width="244" height="74" rx="8" fill="#FDFCFA" stroke="#D9D9D9" stroke-width="1" />
+        <text x="16" y="26" fill="#737373" font-family="sans-serif" font-size="11" font-weight="500">AI Actions Executed</text>
+        <text x="16" y="56" fill="#111111" font-family="sans-serif" font-size="22" font-weight="700">128</text>
+        <text x="175" y="56" fill="#10B981" font-family="monospace" font-size="11">100% Valid</text>
+      </g>
+
+      <!-- Live Room Matrix Grid -->
+      <g transform="translate(0, 94)">
+        <text x="0" y="16" fill="#111111" font-family="sans-serif" font-size="14" font-weight="600">Floor Plan &amp; Live Room Status</text>
+        
+        <!-- Room Tiles Row 1 -->
+        <rect x="0" y="30" width="112" height="70" rx="6" fill="#111111" />
+        <text x="12" y="52" fill="#FFFFFF" font-family="monospace" font-size="13" font-weight="700">301</text>
+        <text x="12" y="70" fill="#B5B5B2" font-family="sans-serif" font-size="10">Deluxe King</text>
+        <text x="12" y="86" fill="#10B981" font-family="monospace" font-size="9">● Occupied</text>
+
+        <rect x="124" y="30" width="112" height="70" rx="6" fill="#FDFCFA" stroke="#D9D9D9" stroke-width="1" />
+        <text x="136" y="52" fill="#111111" font-family="monospace" font-size="13" font-weight="700">302</text>
+        <text x="136" y="70" fill="#737373" font-family="sans-serif" font-size="10">Executive Suite</text>
+        <text x="136" y="86" fill="#737373" font-family="monospace" font-size="9">○ Vacant Ready</text>
+
+        <rect x="248" y="30" width="112" height="70" rx="6" fill="#111111" />
+        <text x="260" y="52" fill="#FFFFFF" font-family="monospace" font-size="13" font-weight="700">303</text>
+        <text x="260" y="70" fill="#B5B5B2" font-family="sans-serif" font-size="10">Standard Twin</text>
+        <text x="260" y="86" fill="#10B981" font-family="monospace" font-size="9">● Occupied</text>
+
+        <rect x="372" y="30" width="112" height="70" rx="6" fill="#FDFCFA" stroke="#D9D9D9" stroke-width="1" />
+        <text x="384" y="52" fill="#111111" font-family="monospace" font-size="13" font-weight="700">304</text>
+        <text x="384" y="70" fill="#737373" font-family="sans-serif" font-size="10">Deluxe Twin</text>
+        <text x="384" y="86" fill="#737373" font-family="monospace" font-size="9">◷ Cleaning</text>
+
+        <rect x="496" y="30" width="112" height="70" rx="6" fill="#111111" />
+        <text x="508" y="52" fill="#FFFFFF" font-family="monospace" font-size="13" font-weight="700">305</text>
+        <text x="508" y="70" fill="#B5B5B2" font-family="sans-serif" font-size="10">Penthouse</text>
+        <text x="508" y="86" fill="#10B981" font-family="monospace" font-size="9">● Reserved</text>
+
+        <rect x="620" y="30" width="116" height="70" rx="6" fill="#FDFCFA" stroke="#D9D9D9" stroke-width="1" />
+        <text x="632" y="52" fill="#111111" font-family="monospace" font-size="13" font-weight="700">306</text>
+        <text x="632" y="70" fill="#737373" font-family="sans-serif" font-size="10">Deluxe King</text>
+        <text x="632" y="86" fill="#737373" font-family="monospace" font-size="9">○ Vacant Ready</text>
+      </g>
+
+      <!-- Autonomous AI Co-Pilot Floating Drawer -->
+      <g transform="translate(0, 220)">
+        <rect width="736" height="195" rx="8" fill="#111111" />
+        
+        <!-- Co-Pilot Header -->
+        <rect width="736" height="36" rx="8" fill="#1C1C1C" />
+        <circle cx="20" cy="18" r="4" fill="#10B981" />
+        <text x="32" y="22" fill="#FFFFFF" font-family="sans-serif" font-size="12" font-weight="600">Autonomous Co-Pilot · ReAct Execution Trace</text>
+        <text x="660" y="22" fill="#737373" font-family="monospace" font-size="10">TOOL_CALL</text>
+
+        <!-- Command Prompt from Operator -->
+        <text x="20" y="62" fill="#737373" font-family="monospace" font-size="11">OPERATOR &gt;</text>
+        <text x="100" y="62" fill="#F5F5F3" font-family="monospace" font-size="11">"Upgrade guest Alex Mercer from 301 to 302 with late checkout at 14:00"</text>
+
+        <!-- Agent Reasoning Box -->
+        <rect x="20" y="80" width="696" height="60" rx="6" fill="#181818" stroke="#333333" stroke-width="1" />
+        <text x="32" y="100" fill="#10B981" font-family="monospace" font-size="10">✓ Tool 1: check_room_status(room="302") → Available</text>
+        <text x="32" y="118" fill="#10B981" font-family="monospace" font-size="10">✓ Tool 2: modify_reservation(guest_id="G-882", new_room="302", checkout="14:00")</text>
+        <text x="32" y="134" fill="#A3A3A3" font-family="monospace" font-size="10">→ Prepared atomic Supabase transaction. Delta: +$45.00 upgrade fee.</text>
+
+        <!-- Action Confirmation Bar -->
+        <rect x="20" y="150" width="130" height="30" rx="4" fill="#FFFFFF" />
+        <text x="85" y="169" fill="#111111" font-family="sans-serif" font-size="11" font-weight="600" text-anchor="middle">Execute Sync</text>
+
+        <rect x="160" y="150" width="100" height="30" rx="4" fill="#262626" />
+        <text x="210" y="169" fill="#D9D9D9" font-family="sans-serif" font-size="11" font-weight="500" text-anchor="middle">Inspect Diff</text>
+      </g>
+    </g>
+  </g>
+</svg>
