@@ -21,6 +21,13 @@ export const metadata: Metadata = {
   description:
     "A monochromatic, elegant, and highly-crafted interactive portfolio presenting Neo primarily through his work, experience, and developer activity.",
   authors: [{ name: "Bernhardth Neo Videan", url: "https://github.com/neovdn" }],
+  icons: {
+    icon: [
+      { url: "/image/logo.webp", type: "image/webp" },
+    ],
+    shortcut: "/image/logo.webp",
+    apple: "/image/logo.webp",
+  },
   keywords: [
     "Bernhardth Neo Videan",
     "Neo",
@@ -49,9 +56,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#F5F5F3] text-[#111111] font-sans">
+      <body className="min-h-screen flex flex-col bg-[#F5F5F3] text-[#111111] font-sans">
         <SmoothScrollProvider>
           <ToastProvider>{children}</ToastProvider>
         </SmoothScrollProvider>

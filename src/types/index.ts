@@ -12,6 +12,7 @@ export interface Project {
   liveUrl?: string;
   githubUrl?: string;
   coverImage: string;
+  images?: string[];
   featured: boolean;
   caseStudy: CaseStudy;
 }
@@ -77,6 +78,24 @@ export interface GithubRepo {
   stars: number;
   url: string;
   isPrivate?: boolean;
+  pushedAt?: string;
+  forks?: number;
+}
+
+export interface ContributionDay {
+  date: string;
+  count: number;
+  level: number; // 0 (none) to 4 (highest)
+  weekday: number; // 0 (Sunday) to 6 (Saturday)
+}
+
+export interface ContributionWeek {
+  days: (ContributionDay | null)[];
+}
+
+export interface GithubCalendar {
+  totalContributions: number;
+  weeks: ContributionWeek[];
 }
 
 export interface GithubData {
@@ -87,6 +106,8 @@ export interface GithubData {
   longestStreakDays: number;
   topLanguages: { name: string; percentage: number }[];
   featuredRepos: GithubRepo[];
+  // Structured calendar with exact counts, dates, and week alignment
+  contributionCalendar: GithubCalendar;
   // 52 weeks x 7 days (0 to 4 intensity)
   contributionMatrix: number[][];
 }

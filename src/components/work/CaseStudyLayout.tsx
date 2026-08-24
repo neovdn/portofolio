@@ -13,6 +13,7 @@ interface CaseStudyLayoutProps {
 
 export function CaseStudyLayout({ project, nextProject }: CaseStudyLayoutProps) {
   const { caseStudy } = project;
+  const [activeImgIndex, setActiveImgIndex] = React.useState(0);
 
   return (
     <article className="min-h-screen bg-[#F5F5F3] text-[#111111] pt-28 pb-20 px-6 sm:px-10 lg:px-16">
@@ -78,16 +79,51 @@ export function CaseStudyLayout({ project, nextProject }: CaseStudyLayoutProps) 
           </div>
         </header>
 
-        {/* Main Cover Image */}
-        <div className="relative w-full aspect-[16/10] bg-[#FFFFFF] border border-[#D9D9D9] rounded-xl overflow-hidden mb-16 shadow-sm">
-          <Image
-            src={project.coverImage}
-            alt={project.title}
-            fill
-            priority
-            className="object-cover"
-          />
-        </div>
+        {/* Main Cover Image / Multi-Image Showcase */}
+        {project.images && project.images.length > 1 ? (
+          <div className="mb-16 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 font-mono text-xs">
+                {project.images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImgIndex(idx)}
+                    className={`px-3 py-1.5 rounded transition-all ${
+                      activeImgIndex === idx
+                        ? "bg-[#111111] text-[#F5F5F3] font-semibold"
+                        : "bg-[#FFFFFF] text-[#737373] border border-[#D9D9D9] hover:text-[#111111]"
+                    }`}
+                  >
+                    {idx === 0 ? "DESKTOP / OVERVIEW" : "MOBILE VIEW"}
+                  </button>
+                ))}
+              </div>
+              <span className="font-mono text-xs text-[#737373]">
+                {activeImgIndex + 1} of {project.images.length}
+              </span>
+            </div>
+
+            <div className="relative w-full aspect-[16/10] bg-[#FFFFFF] border border-[#D9D9D9] rounded-xl overflow-hidden shadow-sm">
+              <Image
+                src={project.images[activeImgIndex]}
+                alt={`${project.title} screenshot ${activeImgIndex + 1}`}
+                fill
+                priority
+                className="object-cover object-top transition-opacity duration-300"
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="relative w-full aspect-[16/10] bg-[#FFFFFF] border border-[#D9D9D9] rounded-xl overflow-hidden mb-16 shadow-sm">
+            <Image
+              src={project.coverImage}
+              alt={project.title}
+              fill
+              priority
+              className="object-cover"
+            />
+          </div>
+        )}
 
         {/* Case Study Body Sections */}
         <div className="space-y-16">

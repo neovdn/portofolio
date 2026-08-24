@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Project } from "@/types";
-import { ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ProjectCardProps {
   project: Project;
@@ -13,12 +13,41 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
+  const images = project.images && project.images.length > 0 ? project.images : [project.coverImage];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-switch images if project has multiple images
+  useEffect(() => {
+    if (images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  const handlePrevImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleNextImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className="group relative border border-[#D9D9D9] bg-[#FFFFFF] rounded-xl overflow-hidden hover:border-[#111111] transition-all duration-300 flex flex-col justify-between"
     >
       {/* Top Card Info Bar */}
@@ -52,12 +81,70 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
       {/* Visual Image Showcase Container */}
       <div className="relative w-full aspect-[16/10] bg-[#EBEBE8] overflow-hidden border-y border-[#D9D9D9]">
-        <Image
-          src={project.coverImage}
-          alt={project.title}
-          fill
-          className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-        />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="relative w-full h-full"
+          >
+            <Image
+              src={images[currentImageIndex]}
+              alt={`${project.title} - Preview ${currentImageIndex + 1}`}
+              fill
+              className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Multi-image indicators and navigation controls */}
+        {images.length > 1 && (
+          <>
+            {/* Left / Right arrow navigation (visible on hover) */}
+            <div className={`absolute inset-y-0 left-2 flex items-center z-10 transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+              <button
+                onClick={handlePrevImage}
+                className="p-1.5 rounded-full bg-[#111111]/80 text-[#F5F5F3] hover:bg-[#111111] transition-colors shadow"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <div className={`absolute inset-y-0 right-2 flex items-center z-10 transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+              <button
+                onClick={handleNextImage}
+                className="p-1.5 rounded-full bg-[#111111]/80 text-[#F5F5F3] hover:bg-[#111111] transition-colors shadow"
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Pagination dots & label */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#111111]/75 backdrop-blur-sm border border-white/20 z-10">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setCurrentImageIndex(i);
+                  }}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    i === currentImageIndex ? "bg-white w-4" : "bg-white/40 hover:bg-white/70"
+                  }`}
+                  aria-label={`Slide ${i + 1}`}
+                />
+              ))}
+            </div>
+
+            <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-[#111111]/70 backdrop-blur-sm text-[10px] font-mono text-white font-medium z-10">
+              {currentImageIndex === 0 ? "DESKTOP VIEW" : "MOBILE VIEW"}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Bottom Metadata & Action Bar */}

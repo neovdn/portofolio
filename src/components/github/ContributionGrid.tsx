@@ -1,14 +1,23 @@
 "use client";
 
 import React, { useState } from "react";
-import { githubData } from "@/data/portfolioData";
+import { ContributionWeek } from "@/types";
 import { cn } from "@/lib/utils";
 
-export function ContributionGrid() {
+interface ContributionGridProps {
+  weeks?: ContributionWeek[];
+  totalContributions?: number;
+}
+
+export function ContributionGrid({
+  weeks = [],
+  totalContributions = 0,
+}: ContributionGridProps) {
   const [hoveredCell, setHoveredCell] = useState<{
     week: number;
     day: number;
     count: number;
+    date?: string;
   } | null>(null);
 
   // Intensity color map (strictly monochromatic)
@@ -29,6 +38,19 @@ export function ContributionGrid() {
     }
   };
 
+  const formatDate = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr + "T00:00:00");
+      return d.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    } catch {
+      return dateStr;
+    }
+  };
+
   return (
     <div className="w-full overflow-x-auto pb-2">
       <div className="min-w-[680px] flex flex-col gap-2">
@@ -41,29 +63,43 @@ export function ContributionGrid() {
             <span>Fri</span>
           </div>
 
-          {/* 52 Columns of Weeks */}
+          {/* Weeks Columns */}
           <div className="flex gap-[3.5px]">
-            {githubData.contributionMatrix.map((weekDays, weekIdx) => (
-              <div key={weekIdx} className="flex flex-col gap-[3.5px]">
-                {weekDays.map((level, dayIdx) => (
-                  <div
-                    key={dayIdx}
-                    onMouseEnter={() =>
-                      setHoveredCell({
-                        week: weekIdx + 1,
-                        day: dayIdx,
-                        count: level === 0 ? 0 : level * 2 + 1,
-                      })
-                    }
-                    onMouseLeave={() => setHoveredCell(null)}
-                    className={cn(
-                      "w-[11px] h-[11px] rounded-[2px] border transition-transform duration-150 cursor-pointer hover:scale-125",
-                      getCellColor(level)
-                    )}
-                  />
-                ))}
+            {weeks.length > 0 ? (
+              weeks.map((week, weekIdx) => (
+                <div key={weekIdx} className="flex flex-col gap-[3.5px]">
+                  {week.days.map((day, dayIdx) =>
+                    day ? (
+                      <div
+                        key={dayIdx}
+                        onMouseEnter={() =>
+                          setHoveredCell({
+                            week: weekIdx + 1,
+                            day: dayIdx,
+                            count: day.count,
+                            date: day.date,
+                          })
+                        }
+                        onMouseLeave={() => setHoveredCell(null)}
+                        className={cn(
+                          "w-[11px] h-[11px] rounded-[2px] border transition-transform duration-150 cursor-pointer hover:scale-125",
+                          getCellColor(day.level)
+                        )}
+                      />
+                    ) : (
+                      <div
+                        key={dayIdx}
+                        className="w-[11px] h-[11px] rounded-[2px] opacity-0 pointer-events-none"
+                      />
+                    )
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className="h-[98px] flex items-center justify-center text-xs font-mono text-[#737373] w-full">
+                No contribution data recorded
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -72,10 +108,16 @@ export function ContributionGrid() {
           <div>
             {hoveredCell ? (
               <span className="text-[#111111] font-semibold">
-                {hoveredCell.count} contribution{hoveredCell.count === 1 ? "" : "s"} on Week {hoveredCell.week}
+                {hoveredCell.count} contribution{hoveredCell.count === 1 ? "" : "s"} on{" "}
+                {hoveredCell.date
+                  ? formatDate(hoveredCell.date)
+                  : `Week ${hoveredCell.week}`}
               </span>
             ) : (
-              <span>{githubData.totalContributions} total contributions in the last year</span>
+              <span>
+                {totalContributions} total contribution
+                {totalContributions === 1 ? "" : "s"} in the last year
+              </span>
             )}
           </div>
 

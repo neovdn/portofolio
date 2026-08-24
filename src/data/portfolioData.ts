@@ -12,7 +12,7 @@ export const personalInfo: PersonalInfo = {
   availability: "Available for projects",
   socials: {
     github: "https://github.com/neovdn",
-    linkedin: "https://linkedin.com/in/neovdn",
+    linkedin: "https://www.linkedin.com/in/bernhardthneo/",
     instagram: "https://instagram.com/neovdn",
     email: "mailto:bernhardthneo@gmail.com",
   },
@@ -40,9 +40,9 @@ export const projects: Project[] = [
       "Tailwind CSS",
       "ReAct Pattern",
     ],
-    liveUrl: "https://roommaster.dev",
-    githubUrl: "https://github.com/neovdn/roommaster",
-    coverImage: "/projects/roommaster/cover.svg",
+    liveUrl: "https://roommaster.vercel.app",
+    githubUrl: "https://github.com/neovdn/RoomMasterb-1",
+    coverImage: "/image/roommaster.webp",
     featured: true,
     caseStudy: {
       overview:
@@ -181,9 +181,9 @@ export const projects: Project[] = [
       "Tailwind CSS",
       "Predictive Analytics",
     ],
-    liveUrl: "https://mutiarabangsa.id",
-    githubUrl: "https://github.com/neovdn/mutiara-bangsa",
-    coverImage: "/projects/mutiara-bangsa/cover.svg",
+    liveUrl: "https://mutiarabangsa.vercel.app",
+    githubUrl: "https://github.com/neovdn/mutiarabangsa",
+    coverImage: "/image/mutiarabangsa.webp",
     featured: true,
     caseStudy: {
       overview:
@@ -262,7 +262,8 @@ export const projects: Project[] = [
     ],
     liveUrl: undefined,
     githubUrl: "https://github.com/neovdn/migaskita",
-    coverImage: "/projects/migaskita/cover.svg",
+    coverImage: "/image/migaskita.webp",
+    images: ["/image/migaskita.webp", "/image/migaskita_phone.webp"],
     featured: true,
     caseStudy: {
       overview:
@@ -320,75 +321,77 @@ export const projects: Project[] = [
     },
   },
   {
-    id: "codevela",
-    slug: "codevela",
+    id: "chandra-kirana-indonesia",
+    slug: "chandra-kirana-indonesia",
     number: "04",
-    title: "CodeVela",
-    subtitle: "Digital Product Studio & Engineering Agency",
+    title: "CV Chandra Kirana Indonesia",
+    subtitle: "Corporate Profile & Industrial Services",
     tagline:
-      "Bespoke software development studio building modern web platforms, mobile applications, and custom enterprise tools.",
+      "Official corporate website and industrial service catalog developed as a client production solution via CodeVela.",
     description:
-      "Founded CodeVela as an independent software studio. Overseeing complete product lifecycles—from client requirement discovery and system architecture to high-craft UI/UX and full-stack deployment for enterprise clients and startups.",
-    category: "Studio & Full-Stack Engineering",
-    year: "2026 — Present",
+      "A high-performance corporate web platform engineered for CV Chandra Kirana Indonesia, developed under CodeVela with Bernhardth Neo Videan as the developer. Features modern responsive typography, comprehensive industrial services overview, and seamless client inquiry channels.",
+    category: "Web Engineering & Corporate Profile",
+    year: "2025",
     technologies: [
       "Next.js",
-      "React Native",
-      "Flutter",
-      "Laravel",
-      "Supabase",
-      "PostgreSQL",
+      "TypeScript",
       "Tailwind CSS",
+      "Framer Motion",
+      "Vercel",
     ],
-    liveUrl: "https://codevela.dev",
-    githubUrl: "https://github.com/codevela",
-    coverImage: "/projects/codevela/cover.svg",
+    liveUrl: "https://www.chandrakiranaindonesia.com/",
+    githubUrl: undefined,
+    coverImage: "/image/cki.webp",
     featured: true,
     caseStudy: {
       overview:
-        "CodeVela represents my digital product studio where I partner with clients to engineer bespoke software solutions. Through CodeVela, I translate complex business requirements into high-performance web applications, mobile platforms, and automated workflow engines.",
+        "CV Chandra Kirana Indonesia is an Indonesian industrial services and trading company. The company partnered with CodeVela (with Bernhardth Neo Videan as the developer) to engineer a modern, high-credibility corporate web presence that showcases their industrial capabilities, certifications, and service portfolio to prospective enterprise clients.",
       problem:
-        "Many businesses struggle to find engineering partners who understand both product design craftsmanship and robust systems engineering, often ending up with generic templates or brittle codebases.",
+        "The company lacked an authoritative digital presence that could clearly articulate their technical specifications, industrial service offerings, and credibility badges to institutional clients and B2B partners across Indonesia.",
       solution:
-        "CodeVela operates with an engineering-first mindset: strict TypeScript typing, modern component architectures, deliberate UI/UX design systems, and resilient database schemas tailored to each client's scaling objectives.",
+        "Engineered a fast, accessible, and responsive corporate web platform using Next.js and Tailwind CSS. The design focuses on clean industrial aesthetics, high-contrast typography, interactive service showcases, and direct B2B consultation inquiry flows.",
       myRole:
-        "Founder & Lead Engineer. Managing product architecture, technical roadmaps, frontend/backend engineering, and client stakeholder relationships across all engagements.",
+        "Lead Web Developer & UI/UX Engineer (via CodeVela). Responsible for end-to-end development, responsive interface design, performance optimization, SEO metadata configuration, and production Vercel deployment.",
       technologies: [
         {
-          category: "Web & UI",
-          items: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "TypeScript"],
+          category: "Frontend & UI",
+          items: ["Next.js (App Router)", "TypeScript", "Tailwind CSS", "Framer Motion", "Lucide Icons"],
         },
         {
-          category: "Mobile",
-          items: ["Flutter", "React Native", "Expo"],
-        },
-        {
-          category: "Backend & Systems",
-          items: ["Laravel", "Supabase", "Node.js", "PostgreSQL", "Docker", "REST & GraphQL"],
+          category: "Deployment & Optimization",
+          items: ["Vercel Edge Network", "OpenGraph Metadata", "Semantic HTML5", "Responsive Web Design"],
         },
       ],
       keyFeatures: [
         {
-          title: "End-to-End Product Lifecycle",
-          description: "From wireframing and interactive prototypes to production cloud infrastructure.",
+          title: "Industrial Services Catalog",
+          description: "Comprehensive categorized display of specialized services and technical capabilities.",
         },
         {
-          title: "High Craftsmanship UI/UX",
-          description: "Clean typography, purposeful micro-interactions, and accessible, responsive design.",
+          title: "Responsive Corporate Showcase",
+          description: "Flawlessly optimized across mobile, tablet, and desktop display viewports.",
         },
         {
-          title: "Robust API & Database Architecture",
-          description: "Normalized PostgreSQL schemas, caching layers, and secure authentication flows.",
+          title: "Direct B2B Communication Channels",
+          description: "Integrated WhatsApp & email inquiry pathways tailored for business procurement.",
+        },
+        {
+          title: "SEO & Fast Loading Architecture",
+          description: "Engineered for top search engine indexing and sub-second page loads.",
         },
       ],
       technicalDecisions: [
         {
-          decision: "Standardized Modern Stack Templates",
-          reason: "Created battle-tested Next.js and Flutter boilerplates with pre-configured CI/CD, linting, and testing pipelines to accelerate client time-to-market.",
+          decision: "Next.js Static Site Generation (SSG)",
+          reason: "Provides maximum delivery speed, top Lighthouse performance scores, and robust SEO crawlability for corporate discovery.",
+        },
+        {
+          decision: "Tailwind CSS with Custom Industrial Palette",
+          reason: "Ensures cohesive branding aligned with Chandra Kirana Indonesia's professional corporate identity.",
         },
       ],
       outcome:
-        "Delivered multiple production-grade web and mobile applications for clients across commerce, logistics, and enterprise services.",
+        "Successfully launched at chandrakiranaindonesia.com, establishing an authoritative digital presence that drives inbound client inquiries and enhances corporate brand credibility.",
     },
   },
 ];
@@ -463,78 +466,15 @@ export const experiences: Experience[] = [
 export const githubData: GithubData = {
   username: "neovdn",
   profileUrl: "https://github.com/neovdn",
-  totalContributions: 384,
-  activeReposCount: 18,
-  longestStreakDays: 24,
-  topLanguages: [
-    { name: "TypeScript", percentage: 48 },
-    { name: "Dart", percentage: 24 },
-    { name: "JavaScript", percentage: 16 },
-    { name: "Python", percentage: 8 },
-    { name: "PHP", percentage: 4 },
-  ],
-  featuredRepos: [
-    {
-      name: "roommaster",
-      description: "Agentic AI co-pilot for hospitality management with LangChain, Next.js & Supabase.",
-      language: "TypeScript",
-      stars: 14,
-      url: "https://github.com/neovdn/roommaster",
-    },
-    {
-      name: "nv_portofolio",
-      description: "Monochromatic, editorial personal developer portfolio built with Next.js & Motion.",
-      language: "TypeScript",
-      stars: 8,
-      url: "https://github.com/neovdn/nv_portofolio",
-    },
-    {
-      name: "mutiara-bangsa",
-      description: "E-commerce platform with predictive inventory forecasting and sales analytics.",
-      language: "TypeScript",
-      stars: 6,
-      url: "https://github.com/neovdn/mutiara-bangsa",
-    },
-    {
-      name: "migaskita",
-      description: "Flutter mobile HR application with geofenced biometric selfie validation.",
-      language: "Dart",
-      stars: 5,
-      url: "https://github.com/neovdn/migaskita",
-    },
-  ],
-  // Realistic authentic 52-week activity distribution matrix (52 weeks x 7 days)
-  contributionMatrix: generateContributionMatrix(),
+  totalContributions: 0,
+  activeReposCount: 0,
+  longestStreakDays: 0,
+  topLanguages: [],
+  featuredRepos: [],
+  contributionCalendar: {
+    totalContributions: 0,
+    weeks: [],
+  },
+  contributionMatrix: [],
 };
 
-function generateContributionMatrix(): number[][] {
-  // Deterministic contribution matrix representing active weeks with realistic bursts
-  const matrix: number[][] = [];
-  const seedPattern = [
-    [0, 1, 2, 1, 3, 2, 0],
-    [1, 2, 3, 4, 2, 1, 0],
-    [0, 1, 1, 2, 1, 0, 0],
-    [2, 3, 4, 3, 2, 1, 1],
-    [1, 0, 2, 3, 1, 2, 0],
-    [3, 4, 3, 2, 4, 1, 0],
-    [1, 2, 1, 0, 1, 1, 0],
-    [0, 2, 3, 2, 1, 0, 0],
-    [2, 3, 1, 4, 2, 3, 1],
-    [1, 1, 2, 2, 3, 1, 0],
-    [0, 0, 1, 2, 1, 1, 0],
-    [2, 4, 3, 3, 2, 0, 0],
-    [1, 2, 2, 1, 0, 1, 0],
-  ];
-
-  for (let w = 0; w < 52; w++) {
-    const pattern = seedPattern[w % seedPattern.length];
-    // Slightly vary based on week to look authentic
-    const weekDays = pattern.map((val, d) => {
-      if ((w + d) % 9 === 0) return 0;
-      if ((w * 3 + d) % 11 === 0) return Math.min(4, val + 1);
-      return val;
-    });
-    matrix.push(weekDays);
-  }
-  return matrix;
-}
