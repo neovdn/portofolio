@@ -80,21 +80,22 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
       </div>
 
       {/* Visual Image Showcase Container */}
-      <div className="relative w-full aspect-[16/10] bg-[#EBEBE8] overflow-hidden border-y border-[#D9D9D9]">
+      <div className="relative w-full aspect-[16/10] bg-[#EBEBE8] editorial-grid overflow-hidden border-y border-[#D9D9D9] flex items-center justify-center p-3 sm:p-4">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentImageIndex}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="relative w-full h-full"
+            transition={{ duration: 0.35 }}
+            className="relative w-full h-full flex items-center justify-center"
           >
             <Image
               src={images[currentImageIndex]}
               alt={`${project.title} - Preview ${currentImageIndex + 1}`}
               fill
-              className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+              className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.02] drop-shadow-sm rounded-lg"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </motion.div>
         </AnimatePresence>
@@ -103,7 +104,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
         {images.length > 1 && (
           <>
             {/* Left / Right arrow navigation (visible on hover) */}
-            <div className={`absolute inset-y-0 left-2 flex items-center z-10 transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+            <div className={`absolute inset-y-0 left-2.5 flex items-center z-10 transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
               <button
                 onClick={handlePrevImage}
                 className="p-1.5 rounded-full bg-[#111111]/80 text-[#F5F5F3] hover:bg-[#111111] transition-colors shadow"
@@ -112,7 +113,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
             </div>
-            <div className={`absolute inset-y-0 right-2 flex items-center z-10 transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
+            <div className={`absolute inset-y-0 right-2.5 flex items-center z-10 transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}>
               <button
                 onClick={handleNextImage}
                 className="p-1.5 rounded-full bg-[#111111]/80 text-[#F5F5F3] hover:bg-[#111111] transition-colors shadow"
@@ -122,8 +123,8 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               </button>
             </div>
 
-            {/* Pagination dots & label */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#111111]/75 backdrop-blur-sm border border-white/20 z-10">
+            {/* Pagination dots */}
+            <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#111111]/75 backdrop-blur-sm border border-white/20 z-10">
               {images.map((_, i) => (
                 <button
                   key={i}
@@ -138,10 +139,6 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                   aria-label={`Slide ${i + 1}`}
                 />
               ))}
-            </div>
-
-            <div className="absolute top-3 right-3 px-2 py-0.5 rounded bg-[#111111]/70 backdrop-blur-sm text-[10px] font-mono text-white font-medium z-10">
-              {currentImageIndex === 0 ? "DESKTOP VIEW" : "MOBILE VIEW"}
             </div>
           </>
         )}

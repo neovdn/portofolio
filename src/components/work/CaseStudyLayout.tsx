@@ -88,13 +88,13 @@ export function CaseStudyLayout({ project, nextProject }: CaseStudyLayoutProps) 
                   <button
                     key={idx}
                     onClick={() => setActiveImgIndex(idx)}
-                    className={`px-3 py-1.5 rounded transition-all ${
+                    className={`px-3 py-1.5 rounded font-mono text-xs transition-all ${
                       activeImgIndex === idx
                         ? "bg-[#111111] text-[#F5F5F3] font-semibold"
                         : "bg-[#FFFFFF] text-[#737373] border border-[#D9D9D9] hover:text-[#111111]"
                     }`}
                   >
-                    {idx === 0 ? "DESKTOP / OVERVIEW" : "MOBILE VIEW"}
+                    {idx === 0 ? "PREVIEW 01" : `PREVIEW 0${idx + 1}`}
                   </button>
                 ))}
               </div>
@@ -103,24 +103,26 @@ export function CaseStudyLayout({ project, nextProject }: CaseStudyLayoutProps) 
               </span>
             </div>
 
-            <div className="relative w-full aspect-[16/10] bg-[#FFFFFF] border border-[#D9D9D9] rounded-xl overflow-hidden shadow-sm">
+            <div className="relative w-full aspect-[16/10] bg-[#EBEBE8] editorial-grid border border-[#D9D9D9] rounded-xl overflow-hidden shadow-sm flex items-center justify-center p-4 sm:p-6">
               <Image
                 src={project.images[activeImgIndex]}
                 alt={`${project.title} screenshot ${activeImgIndex + 1}`}
                 fill
                 priority
-                className="object-cover object-top transition-opacity duration-300"
+                className="object-contain drop-shadow-md rounded-lg transition-opacity duration-300"
+                sizes="(max-width: 1024px) 100vw, 896px"
               />
             </div>
           </div>
         ) : (
-          <div className="relative w-full aspect-[16/10] bg-[#FFFFFF] border border-[#D9D9D9] rounded-xl overflow-hidden mb-16 shadow-sm">
+          <div className="relative w-full aspect-[16/10] bg-[#EBEBE8] editorial-grid border border-[#D9D9D9] rounded-xl overflow-hidden mb-16 shadow-sm flex items-center justify-center p-4 sm:p-6">
             <Image
               src={project.coverImage}
               alt={project.title}
               fill
               priority
-              className="object-cover"
+              className="object-contain drop-shadow-md rounded-lg"
+              sizes="(max-width: 1024px) 100vw, 896px"
             />
           </div>
         )}

@@ -345,7 +345,7 @@ export const projects: Project[] = [
     featured: true,
     caseStudy: {
       overview:
-        "CV Chandra Kirana Indonesia is an Indonesian industrial services and trading company. The company partnered with CodeVela (with Bernhardth Neo Videan as the developer) to engineer a modern, high-credibility corporate web presence that showcases their industrial capabilities, certifications, and service portfolio to prospective enterprise clients.",
+        "CV Chandra Kirana Indonesia is an Indonesian industrial services and construction company. The company partnered with CodeVela (with Bernhardth Neo Videan as the developer) to engineer a modern, high-credibility corporate web presence that showcases their industrial capabilities, certifications, and service portfolio to prospective enterprise clients.",
       problem:
         "The company lacked an authoritative digital presence that could clearly articulate their technical specifications, industrial service offerings, and credibility badges to institutional clients and B2B partners across Indonesia.",
       solution:
