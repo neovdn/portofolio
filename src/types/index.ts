@@ -69,6 +69,7 @@ export interface Experience {
   description: string;
   highlights: string[];
   technologies: string[];
+  logo?: string;
 }
 
 export interface GithubRepo {
