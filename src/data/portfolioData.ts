@@ -20,9 +20,170 @@ export const personalInfo: PersonalInfo = {
 
 export const projects: Project[] = [
   {
+    id: "enterprise-pos",
+    slug: "pos-laravel",
+    number: "01",
+    title: "Enterprise Multi-Branch POS",
+    subtitle: "High-Concurrency Retail Engine & Inventory Control",
+    tagline:
+      "Enterprise-grade multi-branch POS and inventory control system engineered with pessimistic row locking, strict multi-tenant query scoping, and reactive Notion-style aesthetics.",
+    description:
+      "An enterprise-scale Point of Sale (POS) and Multi-Branch Inventory Control system built with a structured modular monolith. Engineered to guarantee financial transaction integrity and prevent inventory overselling during concurrent cashier operations using InnoDB pessimistic row locking, atomic inter-branch stock transfers, and automated physical cash float reconciliations.",
+    category: "Full-Stack & Concurrency Systems",
+    year: "2026",
+    technologies: [
+      "Laravel 12.x",
+      "PHP 8.2+",
+      "Livewire 3",
+      "Alpine.js",
+      "MySQL / InnoDB",
+      "Tailwind CSS",
+      "Pest PHP",
+    ],
+    liveUrl: undefined,
+    githubUrl: "https://github.com/neovdn/POS_Laravel",
+    coverImage: "/image/pos1.webp",
+    images: ["/image/pos1.webp", "/image/pos2.webp", "/image/pos3.webp"],
+    featured: true,
+    caseStudy: {
+      overview:
+        "This project is an enterprise-scale Point of Sale (POS) and Multi-Branch Inventory Control system designed around a structured modular monolith architecture. The primary engineering focus lies on transactional financial integrity and the rigorous prevention of inventory overselling across high-frequency checkouts through database-level InnoDB pessimistic row locking (lockForUpdate) wrapped in atomic database transactions. The system enforces tenant query scoping across branches, cash drawer float reconciliations for cashier shifts, atomic inter-branch stock transfer approval workflows, and interactive gross profit and COGS analytics inside a Notion-inspired workspace interface.",
+      problem:
+        "Multi-branch retail businesses often struggle with inventory drift, concurrency race conditions during simultaneous cashier checkouts, and untracked physical cash discrepancies. When multiple cashiers ring up identical limited-stock items simultaneously, naive database queries produce negative stock and phantom sales. Furthermore, unverified inter-branch inventory transfers and chaotic shift handovers lead to unaccountable revenue leakage.",
+      solution:
+        "Engineered a high-concurrency Laravel 12 application featuring a dedicated Domain Service Layer (CheckoutService, ShiftService, InventoryService). Real-time inventory deduction is guarded by MySQL InnoDB pessimistic row locking (lockForUpdate) inside atomic transactions, guaranteeing zero overselling. Branch data isolation is enforced via multi-tenant query scoping, cashier shifts require mandatory physical float reconciliation with variance logging, and stock transfers execute atomically upon manager approval.",
+      myRole:
+        "Lead Full-Stack Architect & Backend Engineer. Designed database schemas, isolation scopes, concurrency locks, domain services, Livewire reactive components, Notion-inspired design tokens, and comprehensive Pest PHP test suites.",
+      technologies: [
+        {
+          category: "Backend & Architecture",
+          items: [
+            "Laravel 12.x",
+            "PHP 8.2+",
+            "Domain Service Layer (CheckoutService, ShiftService, InventoryService)",
+            "Modular Monolith Pattern",
+          ],
+        },
+        {
+          category: "Database & Concurrency",
+          items: [
+            "MySQL 8.0+ / MariaDB",
+            "InnoDB Storage Engine",
+            "Pessimistic Locking (lockForUpdate)",
+            "Atomic DB::transaction()",
+            "Multi-Tenant Query Scoping",
+          ],
+        },
+        {
+          category: "Frontend & Reactive UI",
+          items: [
+            "Laravel Livewire 3",
+            "Alpine.js",
+            "Tailwind CSS (Custom Notion Tokens)",
+            "Vite 7.x",
+          ],
+        },
+        {
+          category: "Security & Testing",
+          items: [
+            "Laravel Breeze",
+            "spatie/laravel-permission (RBAC: Superadmin, Branch Manager, Cashier)",
+            "Pest PHP (39 Unit & Feature Scenarios, 100% Pass Rate)",
+          ],
+        },
+      ],
+      architecture: {
+        summary:
+          "The architecture implements a clean Domain Service Layer atop Laravel 12, separating business logic from HTTP transport and reactive Livewire state. All financial and inventory mutations are encapsulated inside transactional services executing pessimistic row locks against the InnoDB storage engine.",
+        components: [
+          {
+            layer: "Presentation Layer",
+            name: "Livewire 3 + Alpine.js Reactive Workspace",
+            description:
+              "Fast POS terminal interface with instant barcode scanning, reactive cart state management, and real-time total recalculations without full page reloads.",
+          },
+          {
+            layer: "Domain Service Layer",
+            name: "CheckoutService, ShiftService & InventoryService",
+            description:
+              "Encapsulated domain logic handling multi-item checkout validation, shift opening/closing float reconciliations, and inter-branch transfer state machines.",
+          },
+          {
+            layer: "Concurrency & Lock Layer",
+            name: "InnoDB Pessimistic Locking (lockForUpdate)",
+            description:
+              "Acquires exclusive database row locks during inventory deductions inside DB::transaction(), serializing concurrent cashier requests and eliminating race conditions.",
+          },
+          {
+            layer: "Data Isolation Layer",
+            name: "Multi-Tenant Query Scoping & RBAC",
+            description:
+              "Strict branch-level query isolation combined with Spatie RBAC guarding Superadmin, Branch Manager, and Cashier operational permissions.",
+          },
+        ],
+      },
+      keyFeatures: [
+        {
+          title: "Pessimistic Row-Locking Checkout",
+          description:
+            "Protects inventory counts from race conditions during simultaneous checkouts using InnoDB lockForUpdate inside atomic transactions.",
+        },
+        {
+          title: "Multi-Tenant Branch Isolation",
+          description:
+            "Automated query scoping ensures staff access only their assigned branch inventory, sales logs, and registers.",
+        },
+        {
+          title: "Cash Drawer Shift Audit & Reconciliation",
+          description:
+            "Mandatory shift opening float recording and end-of-shift physical cash counting with automated variance detection and audit trails.",
+        },
+        {
+          title: "Atomic Inter-Branch Stock Transfers",
+          description:
+            "Two-phase transfer approval workflow that deducts transit stock and commits destination inventory only upon verified physical receipt.",
+        },
+        {
+          title: "Gross Profit & COGS Analytics",
+          description:
+            "Real-time dashboards breaking down Cost of Goods Sold (HPP), revenue velocity, and net margins per product category and branch.",
+        },
+        {
+          title: "Notion-Inspired Workspace UI",
+          description:
+            "Tailwind CSS styled with custom Notion design tokens, including Notion Purple accents (#5645d4), 8px rectangular buttons, and database pastel chips.",
+        },
+      ],
+      technicalDecisions: [
+        {
+          decision: "InnoDB Pessimistic Locking over Optimistic Locking",
+          reason:
+            "Retail checkouts require immediate certainty; pessimistic locking guarantees immediate serial execution without frustrating rollback retries for cashiers during flash sale rushes.",
+        },
+        {
+          decision: "Livewire 3 + Alpine.js over Separate SPA",
+          reason:
+            "Provides instantaneous reactivity for barcode scanning and cart modifications while retaining Laravel's robust server-side validation and authentication architecture.",
+        },
+        {
+          decision: "Domain Service Layer Architecture",
+          reason:
+            "Decouples core checkout, inventory, and shift accounting algorithms from controllers, enabling clean automated testing and maintainability.",
+        },
+        {
+          decision: "Comprehensive Pest PHP Test Suite",
+          reason:
+            "39 automated unit and feature tests validating tenant scoping boundaries, atomic mutations, shift reconciliation calculations, and race condition prevention with 100% pass rate.",
+        },
+      ],
+      outcome:
+        "Delivered an enterprise-ready retail POS system with proven 100% test pass rate across 39 scenarios, absolute financial ledger integrity, zero inventory overselling under high concurrency, and a responsive Notion-like user experience.",
+    },
+  },
+  {
     id: "roommaster",
     slug: "roommaster",
-    number: "01",
+    number: "02",
     title: "RoomMaster",
     subtitle: "Agentic AI × Hotel Management",
     tagline:
@@ -48,7 +209,7 @@ export const projects: Project[] = [
       overview:
         "RoomMaster was designed to solve operational friction in hospitality management. Traditional property management systems (PMS) force staff to navigate dense, multi-nested menus to check room availability, update guest preferences, and modify bookings. RoomMaster introduces an Agentic AI co-pilot that can reason, choose tools, and execute verified database transactions safely via natural language.",
       problem:
-        "Front-desk staff at boutique and mid-scale hotels spend considerable time performing repetitive multi-step operations in rigid legacy software. When guests request adjustments—such as room upgrades, late check-outs, or date shifts—staff must manually reconcile pricing rules, room inventory, and payment status, introducing delays and human error.",
+        "Front-desk staff at boutique and mid-scale hotels spend considerable time performing repetitive multi-step operations in rigid legacy software. When guests request adjustments, such as room upgrades, late check-outs, or date shifts, staff must manually reconcile pricing rules, room inventory, and payment status, introducing delays and human error.",
       solution:
         "We built a modern web application powered by Next.js and Supabase, integrated with an autonomous AI reasoning engine. The AI co-pilot implements the ReAct (Reasoning + Acting) loop using LangChain and OpenAI function calling, allowing it to inspect live database schema, execute validation queries, generate booking modifications, and confirm destructive actions with human-in-the-loop safeguards.",
       myRole:
@@ -164,7 +325,7 @@ export const projects: Project[] = [
   {
     id: "mutiara-bangsa",
     slug: "mutiara-bangsa",
-    number: "02",
+    number: "03",
     title: "Mutiara Bangsa",
     subtitle: "AI-Powered E-Commerce & Retail Forecasting",
     tagline:
@@ -243,7 +404,7 @@ export const projects: Project[] = [
   {
     id: "migaskita",
     slug: "migaskita",
-    number: "03",
+    number: "04",
     title: "MigasKita",
     subtitle: "Enterprise Mobile HR & Geofencing Attendance",
     tagline:
@@ -251,7 +412,7 @@ export const projects: Project[] = [
     description:
       "A cross-platform mobile application engineered for field personnel and corporate employees in the energy sector. Implements strict location geofencing, camera-based selfie check-in, and leave management workflows.",
     category: "Mobile Application (Flutter)",
-    year: "2024 — 2025",
+    year: "2024 - 2025",
     technologies: [
       "Flutter",
       "Dart",
@@ -323,7 +484,7 @@ export const projects: Project[] = [
   {
     id: "chandra-kirana-indonesia",
     slug: "chandra-kirana-indonesia",
-    number: "04",
+    number: "05",
     title: "CV Chandra Kirana Indonesia",
     subtitle: "Corporate Profile & Industrial Services",
     tagline:

@@ -3,15 +3,15 @@
 import React from "react";
 import Link from "next/link";
 import { projects } from "@/data/portfolioData";
-import { ProjectCard } from "./ProjectCard";
+import { ProjectDeckSlider } from "./ProjectDeckSlider";
 import { ArrowUpRight } from "lucide-react";
 
 export function WorkSection() {
   return (
-    <section id="work" className="py-20 lg:py-28 px-6 sm:px-10 lg:px-16 border-t border-[#D9D9D9]">
+    <section id="work" className="py-10 lg:py-16 px-4 sm:px-8 lg:px-12 border-t border-[#D9D9D9]">
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 lg:mb-16 gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 lg:mb-8 gap-4">
           <div>
             <div className="flex items-center gap-3 mb-3">
               <span className="font-mono text-xs text-[#737373] tracking-widest uppercase">
@@ -26,7 +26,7 @@ export function WorkSection() {
 
           <div className="flex flex-col sm:items-end">
             <p className="font-mono text-xs text-[#737373] max-w-xs sm:text-right">
-              Curated digital products engineered across web, mobile, and autonomous AI systems.
+              Curated digital products engineered across web, mobile, and autonomous systems.
             </p>
             <Link
               href="/work"
@@ -38,12 +38,8 @@ export function WorkSection() {
           </div>
         </div>
 
-        {/* Project Grid (2 columns on desktop, 1 on mobile) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
-          {projects.map((project, idx) => (
-            <ProjectCard key={project.id} project={project} index={idx} />
-          ))}
-        </div>
+        {/* Interactive Stacked Project Deck Slider */}
+        <ProjectDeckSlider projects={projects} />
       </div>
     </section>
   );

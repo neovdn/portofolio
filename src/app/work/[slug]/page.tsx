@@ -31,7 +31,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${project.title} — Case Study · Bernhardth Neo Videan`,
+    title: `${project.title} · Case Study · Bernhardth Neo Videan`,
     description: project.tagline,
   };
 }
