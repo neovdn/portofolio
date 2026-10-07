@@ -45,7 +45,7 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
 
       if (!isHomePage) return;
 
-      const sections = ["hero", "work", "experience", "github", "contact"];
+      const sections = ["hero", "work", "experience", "stack", "github", "contact"];
       const scrollPosition = window.scrollY + 200;
 
       for (const section of sections) {
@@ -68,6 +68,7 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
   const navItems = [
     { label: "WORK", href: isHomePage ? "#work" : "/#work", id: "work" },
     { label: "EXPERIENCE", href: isHomePage ? "#experience" : "/#experience", id: "experience" },
+    { label: "STACK", href: isHomePage ? "#stack" : "/#stack", id: "stack" },
     { label: "GITHUB", href: isHomePage ? "#github" : "/#github", id: "github" },
     { label: "CONTACT", href: isHomePage ? "#contact" : "/#contact", id: "contact" },
   ];

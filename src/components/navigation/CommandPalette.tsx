@@ -25,6 +25,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     { id: "nav-hero", label: "Jump to Home / Introduction", category: "Navigation", icon: ArrowRight, action: () => { router.push("/#hero"); onClose(); } },
     { id: "nav-work", label: "Jump to Selected Work", category: "Navigation", icon: ArrowRight, action: () => { router.push("/#work"); onClose(); } },
     { id: "nav-exp", label: "Jump to Experience", category: "Navigation", icon: ArrowRight, action: () => { router.push("/#experience"); onClose(); } },
+    { id: "nav-stack", label: "Jump to Tech Stack & Arsenal", category: "Navigation", icon: ArrowRight, action: () => { router.push("/#stack"); onClose(); } },
     { id: "nav-git", label: "Jump to Developer Activity", category: "Navigation", icon: ArrowRight, action: () => { router.push("/#github"); onClose(); } },
     { id: "nav-contact", label: "Jump to Contact", category: "Navigation", icon: ArrowRight, action: () => { router.push("/#contact"); onClose(); } },
     

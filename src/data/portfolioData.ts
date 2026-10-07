@@ -8,13 +8,13 @@ export const personalInfo: PersonalInfo = {
     "Engineering thoughtful web applications, cross-platform mobile experiences, and autonomous AI systems with a deep focus on craftsmanship, performance, and user experience.",
   location: "Indonesia",
   timezone: "GMT+7 (WIB)",
-  email: "bernhardthneo@gmail.com",
+  email: "neovideanx@gmail.com",
   availability: "Available for projects",
   socials: {
     github: "https://github.com/neovdn",
     linkedin: "https://www.linkedin.com/in/bernhardthneo/",
     instagram: "https://instagram.com/neovdn",
-    email: "mailto:bernhardthneo@gmail.com",
+    email: "mailto:neovideanx@gmail.com",
   },
 };
 

@@ -22,7 +22,7 @@ export function GithubSection({ data = defaultGithubData }: GithubSectionProps) 
           <div>
             <div className="flex items-center gap-3 mb-3">
               <span className="font-mono text-xs text-[#737373] tracking-widest uppercase">
-                03 / OPEN SOURCE &amp; CODE
+                04 / OPEN SOURCE &amp; CODE
               </span>
               <div className="h-[1px] w-8 bg-[#D9D9D9]" />
             </div>

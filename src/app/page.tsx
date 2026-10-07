@@ -3,6 +3,7 @@ import { getGithubData } from "@/lib/github";
 import { HeroSection } from "@/components/hero/HeroSection";
 import { WorkSection } from "@/components/work/WorkSection";
 import { ExperienceSection } from "@/components/experience/ExperienceSection";
+import { TechStackSection } from "@/components/stack/TechStackSection";
 import { GithubSection } from "@/components/github/GithubSection";
 import { ContactFooter } from "@/components/contact/ContactFooter";
 import { HomeShell } from "@/components/navigation/HomeShell";
@@ -16,6 +17,7 @@ export default async function HomePage() {
         <HeroSection />
         <WorkSection />
         <ExperienceSection />
+        <TechStackSection />
         <GithubSection data={githubData} />
       </main>
       <ContactFooter />
