@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { personalInfo } from "@/data/portfolioData";
-import { IdentityCard } from "./IdentityCard";
+import { FrostedGlass } from "./FrostedGlass";
 import { GitHubIcon, LinkedInIcon, InstagramIcon, EmailIcon } from "@/components/ui/Icons";
 import { FileText } from "lucide-react";
 import { motion } from "framer-motion";
@@ -116,14 +116,14 @@ export function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Right Column: Interactive 3D Identity Card */}
+        {/* Right Column: Interactive Frosted Glass */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+          transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
           className="lg:col-span-5 flex justify-center lg:justify-end"
         >
-          <IdentityCard />
+          <FrostedGlass />
         </motion.div>
       </div>
     </section>
