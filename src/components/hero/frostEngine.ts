@@ -3,7 +3,7 @@
 export const CONFIG = {
     /** Lebar usapan pointer asli dalam CSS px */
     BRUSH_RADIUS: 28,
-    /** Lebar garis tulisan intro dalam CSS px (disiapkan untuk Fase 2) */
+    /** Lebar garis tulisan intro dalam CSS px */
     INTRO_BRUSH_RADIUS: 12,
     /** Kelembutan tepi kuas (0 = sangat lembut, 1 = keras) */
     BRUSH_HARDNESS: 0.35,
@@ -17,10 +17,28 @@ export const CONFIG = {
     NOISE_OPACITY: 0.06,
     /** Jarak antar garis grid pada scene dalam CSS px */
     GRID_SIZE: 24,
-    /** Jeda sebelum animasi intro berjalan dalam ms (disiapkan untuk Fase 2) */
+    /** Jeda sebelum animasi intro dimulai setelah mount dalam ms */
     INTRO_DELAY: 700,
+    /** Durasi penulisan per huruf saat intro dalam ms (target PRD: 600-900 ms) */
+    INTRO_LETTER_DURATION: 750,
+    /** Jeda waktu antar huruf N dan V saat intro dalam ms */
+    INTRO_LETTER_GAP: 150,
     /** Batas maksimal device pixel ratio */
     DPR_CAP: 2,
+    /** Polyline ternormalisasi (0-1) untuk huruf N (naik, diagonal turun, naik) dan V (turun diagonal, naik) */
+    INTRO_POLYLINES: {
+        N: [
+            [0.27, 0.57],
+            [0.27, 0.37],
+            [0.45, 0.57],
+            [0.45, 0.37],
+        ] as const,
+        V: [
+            [0.55, 0.37],
+            [0.64, 0.57],
+            [0.73, 0.37],
+        ] as const,
+    },
 } as const;
 
 export interface FrostEngineOptions {
@@ -30,6 +48,7 @@ export interface FrostEngineOptions {
     title: string;                    // personalInfo.title
     reducedMotion: boolean;
     onFirstWipe?: () => void;         // untuk menyembunyikan petunjuk
+    onIntroComplete?: () => void;     // untuk menampilkan petunjuk setelah intro selesai
 }
 
 export interface FrostEngine {
@@ -39,6 +58,15 @@ export interface FrostEngine {
     playIntro(): void;
     setVisible(visible: boolean): void;         // jeda atau lanjut loop
     destroy(): void;                            // batalkan rAF, lepas referensi canvas
+}
+
+interface SegmentInfo {
+    x0: number;
+    y0: number;
+    x1: number;
+    y1: number;
+    startFrac: number;
+    endFrac: number;
 }
 
 export function createFrostEngine(options: FrostEngineOptions): FrostEngine {
@@ -81,6 +109,14 @@ export function createFrostEngine(options: FrostEngineOptions): FrostEngine {
     let lastStampTime = 0;
     let lastFrameTime = 0;
     let accumDt = 0;
+
+    // State intro otomatis (FR-5)
+    let hasPlayedIntro = false;
+    let introDelayTimer: ReturnType<typeof setTimeout> | null = null;
+    let introActive = false;
+    let introElapsedMs = 0;
+    let prevLetterIdx = -1;
+    let prevLetterProgress = 0;
 
     function initNoiseTile(): void {
         if (!noiseCtx) return;
@@ -274,6 +310,7 @@ export function createFrostEngine(options: FrostEngineOptions): FrostEngine {
         frostCtx.setTransform(currentDpr, 0, 0, currentDpr, 0, 0);
         frostCtx.globalCompositeOperation = "destination-out";
         frostCtx.globalAlpha = 1;
+        frostCtx.imageSmoothingEnabled = true;
         frostCtx.drawImage(
             brushCanvas,
             x - radiusCss,
@@ -302,19 +339,138 @@ export function createFrostEngine(options: FrostEngineOptions): FrostEngine {
         ensureLoop();
     }
 
-    /** FR-4 & FR-6: Loop pemulihan embun berbasis waktu dan berhenti otomatis saat pulih */
+    /** Bangun daftar segmen polyline dengan proporsi panjang untuk animasi intro yang alami */
+    function buildSegments(points: readonly (readonly [number, number])[]): SegmentInfo[] {
+        const raw: { x0: number; y0: number; x1: number; y1: number; len: number }[] = [];
+        let totalLen = 0;
+
+        for (let i = 0; i < points.length - 1; i++) {
+            const x0 = points[i][0] * width;
+            const y0 = points[i][1] * height;
+            const x1 = points[i + 1][0] * width;
+            const y1 = points[i + 1][1] * height;
+            const len = Math.max(1, Math.hypot(x1 - x0, y1 - y0));
+            raw.push({ x0, y0, x1, y1, len });
+            totalLen += len;
+        }
+
+        let accum = 0;
+        return raw.map((seg) => {
+            const startFrac = accum / totalLen;
+            accum += seg.len;
+            const endFrac = accum / totalLen;
+            return {
+                x0: seg.x0,
+                y0: seg.y0,
+                x1: seg.x1,
+                y1: seg.y1,
+                startFrac,
+                endFrac,
+            };
+        });
+    }
+
+    /** Easing halus per tarikan garis agar gerakan menyerupai tangan manusia */
+    function easeStroke(t: number): number {
+        const clamped = Math.max(0, Math.min(1, t));
+        const cosine = 0.5 - 0.5 * Math.cos(Math.PI * clamped);
+        return 0.35 * clamped + 0.65 * cosine;
+    }
+
+    /** Gambar rentang progres [p0, p1] (0..1) pada sebuah polyline huruf tanpa memotong sudut */
+    function tracePolylineRange(
+        points: readonly (readonly [number, number])[],
+        p0: number,
+        p1: number
+    ): void {
+        if (width <= 0 || height <= 0 || p1 <= p0) return;
+        const segments = buildSegments(points);
+
+        for (const seg of segments) {
+            if (p1 < seg.startFrac || p0 > seg.endFrac) continue;
+
+            const span = Math.max(0.0001, seg.endFrac - seg.startFrac);
+            const local0 = easeStroke((Math.max(p0, seg.startFrac) - seg.startFrac) / span);
+            const local1 = easeStroke((Math.min(p1, seg.endFrac) - seg.startFrac) / span);
+
+            const sx0 = seg.x0 + (seg.x1 - seg.x0) * local0;
+            const sy0 = seg.y0 + (seg.y1 - seg.y0) * local0;
+            const sx1 = seg.x0 + (seg.x1 - seg.x0) * local1;
+            const sy1 = seg.y0 + (seg.y1 - seg.y0) * local1;
+
+            eraseSegment(sx0, sy0, sx1, sy1, CONFIG.INTRO_BRUSH_RADIUS);
+        }
+    }
+
+    function cancelIntro(): void {
+        if (introDelayTimer !== null) {
+            clearTimeout(introDelayTimer);
+            introDelayTimer = null;
+        }
+        introActive = false;
+    }
+
+    /** Update posisi pointer virtual intro berdasarkan waktu frame */
+    function stepIntro(dtMs: number): void {
+        if (!introActive) return;
+
+        introElapsedMs += dtMs;
+        const dur = CONFIG.INTRO_LETTER_DURATION;
+        const gap = CONFIG.INTRO_LETTER_GAP;
+        const totalIntroMs = dur * 2 + gap;
+
+        // Huruf 0: "N" pada [0, dur]
+        if (introElapsedMs <= dur) {
+            const currProg = Math.min(1, introElapsedMs / dur);
+            const startProg = prevLetterIdx === 0 ? prevLetterProgress : 0;
+            tracePolylineRange(CONFIG.INTRO_POLYLINES.N, startProg, currProg);
+            prevLetterIdx = 0;
+            prevLetterProgress = currProg;
+            return;
+        }
+
+        // Pastikan ujung akhir huruf "N" tuntas sebelum masuk ke jeda antarhuruf
+        if (prevLetterIdx === 0 && prevLetterProgress < 1) {
+            tracePolylineRange(CONFIG.INTRO_POLYLINES.N, prevLetterProgress, 1);
+            prevLetterProgress = 1;
+        }
+
+        // Jeda antarhuruf: (dur, dur + gap)
+        if (introElapsedMs <= dur + gap) {
+            return;
+        }
+
+        // Huruf 1: "V" pada [dur + gap, 2 * dur + gap]
+        const vElapsed = introElapsedMs - (dur + gap);
+        const currVProg = Math.min(1, vElapsed / dur);
+        const startVProg = prevLetterIdx === 1 ? prevLetterProgress : 0;
+        tracePolylineRange(CONFIG.INTRO_POLYLINES.V, startVProg, currVProg);
+        prevLetterIdx = 1;
+        prevLetterProgress = currVProg;
+
+        if (introElapsedMs >= totalIntroMs) {
+            introActive = false;
+            options.onIntroComplete?.();
+        }
+    }
+
+    /** FR-4, FR-5 & FR-6: Loop terpadu untuk intro dan pemulihan embun berbasis waktu */
     function tick(now: number): void {
         rafId = null;
         if (destroyed || !dirty || !visible || !frostCtx) return;
 
         const dt = Math.max(0, (now - lastFrameTime) / 1000);
         lastFrameTime = now;
-        accumDt += dt;
 
+        if (introActive) {
+            stepIntro(dt * 1000);
+        }
+
+        accumDt += dt;
         const elapsedSinceStamp = (now - lastStampTime) / 1000;
 
-        // Hentikan loop ketika sudah melewati 4 * tau dan timpa penuh sekali untuk membersihkan residu 8-bit
-        if (elapsedSinceStamp >= 4 * CONFIG.REGEN_TAU) {
+        // Hentikan loop ketika intro selesai dan waktu sejak stamp terakhir melewati 4 * tau
+        if (!introActive && elapsedSinceStamp >= 4 * CONFIG.REGEN_TAU) {
             fillFrostFull();
             dirty = false;
             accumDt = 0;
@@ -368,19 +524,24 @@ export function createFrostEngine(options: FrostEngineOptions): FrostEngine {
             buildFrostTexture();
             fillFrostFull();
 
-            // Reset state interaksi saat resize
+            // Reset state interaksi saat resize (tanpa mengulang intro)
             lastX = null;
             lastY = null;
-            dirty = false;
-            accumDt = 0;
-            if (rafId !== null) {
-                window.cancelAnimationFrame(rafId);
-                rafId = null;
+            if (!introActive) {
+                dirty = false;
+                accumDt = 0;
+                if (rafId !== null) {
+                    window.cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
             }
         },
 
         pointerMove(x: number, y: number): void {
             if (destroyed || width <= 0 || height <= 0) return;
+
+            // Batalkan intro seketika saat pengunjung menyentuh/mengusap kaca
+            cancelIntro();
 
             if (!hasWipedOnce) {
                 hasWipedOnce = true;
@@ -401,7 +562,20 @@ export function createFrostEngine(options: FrostEngineOptions): FrostEngine {
         },
 
         playIntro(): void {
-            // Akan diimplementasikan pada Fase 2 (Intro NV otomatis)
+            if (destroyed || hasPlayedIntro || options.reducedMotion || hasWipedOnce) return;
+            hasPlayedIntro = true;
+
+            introDelayTimer = setTimeout(() => {
+                introDelayTimer = null;
+                if (destroyed || hasWipedOnce) return;
+                introActive = true;
+                introElapsedMs = 0;
+                prevLetterIdx = -1;
+                prevLetterProgress = 0;
+                lastStampTime = performance.now();
+                dirty = true;
+                ensureLoop();
+            }, CONFIG.INTRO_DELAY);
         },
 
         setVisible(nextVisible: boolean): void {
@@ -417,6 +591,7 @@ export function createFrostEngine(options: FrostEngineOptions): FrostEngine {
         destroy(): void {
             destroyed = true;
             dirty = false;
+            cancelIntro();
             if (rafId !== null) {
                 window.cancelAnimationFrame(rafId);
                 rafId = null;

@@ -1,7 +1,8 @@
 // src/components/hero/FrostedGlass.tsx
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Sparkles } from "lucide-react";
 import { personalInfo } from "@/data/portfolioData";
 import { createFrostEngine, type FrostEngine } from "./frostEngine";
 
@@ -9,11 +10,16 @@ export function FrostedGlass() {
     const sceneCanvasRef = useRef<HTMLCanvasElement | null>(null);
     const frostCanvasRef = useRef<HTMLCanvasElement | null>(null);
     const engineRef = useRef<FrostEngine | null>(null);
+    const hasWipedRef = useRef(false);
+
+    const [showHint, setShowHint] = useState(false);
 
     useEffect(() => {
         const sceneCanvas = sceneCanvasRef.current;
         const frostCanvas = frostCanvasRef.current;
         if (!sceneCanvas || !frostCanvas) return;
+
+        hasWipedRef.current = false;
 
         const engine = createFrostEngine({
             sceneCanvas,
@@ -21,6 +27,15 @@ export function FrostedGlass() {
             name: personalInfo.name,
             title: personalInfo.title,
             reducedMotion: false,
+            onIntroComplete: () => {
+                if (!hasWipedRef.current) {
+                    setShowHint(true);
+                }
+            },
+            onFirstWipe: () => {
+                hasWipedRef.current = true;
+                setShowHint(false);
+            },
         });
         engineRef.current = engine;
 
@@ -32,6 +47,7 @@ export function FrostedGlass() {
         };
 
         updateSize();
+        engine.playIntro();
 
         let resizeTimer: ReturnType<typeof setTimeout> | null = null;
         const resizeObserver = new ResizeObserver(() => {
@@ -103,11 +119,22 @@ export function FrostedGlass() {
 
             {/* Lapisan 3: Overlay DOM */}
             <div className="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between">
+                {/* Label Kiri Atas */}
                 <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-[#111111]" />
                     <span className="font-mono text-xs font-semibold tracking-wider text-[#111111] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)]">
                         NV // GLASS
                     </span>
+                </div>
+
+                {/* Petunjuk Kiri Bawah */}
+                <div
+                    aria-hidden="true"
+                    className={`flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-[#737373] drop-shadow-[0_1px_1px_rgba(255,255,255,0.5)] transition-opacity duration-300 ${showHint ? "opacity-100" : "opacity-0"
+                        }`}
+                >
+                    <Sparkles className="w-3 h-3" />
+                    <span>WIPE THE GLASS</span>
                 </div>
             </div>
         </div>
