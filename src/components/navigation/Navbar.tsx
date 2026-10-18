@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { personalInfo } from "@/data/portfolioData";
 import { cn } from "@/lib/utils";
-import { Menu, X, ArrowUpRight, Command } from "lucide-react";
+import { Menu, X, ArrowUpRight, Search } from "lucide-react";
 
 interface NavbarProps {
   onOpenCommandPalette?: () => void;
@@ -14,51 +14,53 @@ interface NavbarProps {
 export function Navbar({ onOpenCommandPalette }: NavbarProps) {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
-  const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [activeSection, setActiveSection] = useState("hero");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [timeString, setTimeString] = useState("");
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
 
-  // Live time ticker (GMT+7 WIB)
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone: "Asia/Jakarta",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      };
-      setTimeString(new Intl.DateTimeFormat("en-GB", options).format(now));
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Scroll detection & section spy
+  // Hide on scroll-down, reveal on scroll-up
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      if (ticking.current) return;
+      ticking.current = true;
 
-      if (!isHomePage) return;
+      window.requestAnimationFrame(() => {
+        const currentY = window.scrollY;
+        const delta = currentY - lastScrollY.current;
 
-      const sections = ["hero", "work", "experience", "stack", "github", "contact"];
-      const scrollPosition = window.scrollY + 200;
+        // Always show when near top
+        if (currentY < 80) {
+          setVisible(true);
+        } else if (delta > 6) {
+          // Scrolling down — hide
+          setVisible(false);
+          setMobileMenuOpen(false);
+        } else if (delta < -6) {
+          // Scrolling up — show
+          setVisible(true);
+        }
 
-      for (const section of sections) {
-        const el = document.getElementById(section);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(section);
-            break;
+        lastScrollY.current = currentY;
+        ticking.current = false;
+
+        // Section spy
+        if (!isHomePage) return;
+        const sections = ["hero", "work", "experience", "stack", "github", "contact"];
+        const scrollPosition = currentY + 200;
+        for (const section of sections) {
+          const el = document.getElementById(section);
+          if (el) {
+            const top = el.offsetTop;
+            const height = el.offsetHeight;
+            if (scrollPosition >= top && scrollPosition < top + height) {
+              setActiveSection(section);
+              break;
+            }
           }
         }
-      }
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -75,30 +77,27 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
 
   return (
     <>
+      {/* Floating Island Navbar — hides on scroll-down, shows on scroll-up */}
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-40 transition-all duration-300 px-6 sm:px-10 lg:px-16",
-          scrolled
-            ? "py-3 bg-[#F5F5F3]/90 backdrop-blur-md border-b border-[#D9D9D9]"
-            : "py-6 bg-transparent"
+          "fixed top-4 sm:top-6 left-0 right-0 z-40 px-4 sm:px-8 lg:px-12 pointer-events-none",
+          "transition-all duration-300 ease-in-out",
+          visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
         )}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Brand Logo */}
+        <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
+
+          {/* Brand — bare black box, no container */}
           <Link
             href="/"
-            className="group flex items-center gap-2 text-sm font-bold tracking-tight text-[#111111]"
+            className="font-mono text-xs font-bold px-2 py-1 bg-[#111111] text-[#F5F5F3] hover:bg-[#262626] transition-colors"
+            aria-label="Home — Bernhardth Neo Videan"
           >
-            <span className="font-mono text-xs px-1.5 py-0.5 bg-[#111111] text-[#F5F5F3] group-hover:bg-[#262626] transition-colors">
-              NV
-            </span>
-            <span className="font-sans font-semibold tracking-wider text-xs uppercase">
-              Neo Videan
-            </span>
+            NV
           </Link>
 
-          {/* Center Navigation Links (Desktop) */}
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Center Navigation Pill (Desktop) */}
+          <nav className="hidden md:flex items-center gap-0.5 px-2.5 py-2 rounded-full bg-[#FFFFFF]/90 backdrop-blur-md border border-[#D9D9D9] shadow-sm">
             {navItems.map((item) => {
               const isActive = isHomePage && activeSection === item.id;
               return (
@@ -106,96 +105,93 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
                   key={item.label}
                   href={item.href}
                   className={cn(
-                    "font-mono text-xs tracking-wider transition-colors relative py-1",
+                    "font-mono text-[11px] font-semibold tracking-wider px-3.5 py-1.5 rounded-full transition-all",
                     isActive
-                      ? "text-[#111111] font-semibold"
-                      : "text-[#737373] hover:text-[#111111]"
+                      ? "text-[#111111] bg-[#EBEBE8]"
+                      : "text-[#444444] hover:text-[#111111] hover:bg-[#EBEBE8]/70"
                   )}
                 >
                   {item.label}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#111111]" />
-                  )}
                 </a>
               );
             })}
           </nav>
 
-          {/* Right Status & Actions */}
-          <div className="hidden sm:flex items-center gap-4">
-            {/* Live Availability Status */}
-            <div className="flex items-center gap-2 px-2.5 py-1 rounded border border-[#D9D9D9] bg-[#EBEBE8]/60 text-[11px] font-mono text-[#111111]">
-              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
-              <span>Available</span>
-              {timeString && (
-                <span className="text-[#737373] border-l border-[#D9D9D9] pl-2">
-                  {timeString} WIB
-                </span>
-              )}
-            </div>
-
-            {/* Quick Cmd+K Button */}
+          {/* Right Actions */}
+          <div className="flex items-center gap-2">
+            {/* Search / Command Palette */}
             {onOpenCommandPalette && (
               <button
                 onClick={onOpenCommandPalette}
-                className="hidden lg:flex items-center gap-1.5 px-2 py-1 text-[11px] font-mono text-[#737373] border border-[#D9D9D9] bg-[#F5F5F3] hover:text-[#111111] hover:border-[#111111] transition-colors rounded"
+                className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#FFFFFF]/90 backdrop-blur-md border border-[#D9D9D9] shadow-sm hover:border-[#111111] hover:bg-[#F5F5F3] transition-all cursor-pointer"
                 title="Open Command Palette (Cmd+K)"
+                aria-label="Open Command Search"
               >
-                <Command className="w-3 h-3" />
-                <span>K</span>
+                <Search className="w-3.5 h-3.5 text-[#444444]" />
               </button>
             )}
 
-            {/* CV Link */}
+            {/* CV Button */}
             <Link
               href="/cv"
-              className="px-3 py-1 text-xs font-mono tracking-wider bg-[#111111] text-[#F5F5F3] hover:bg-[#262626] transition-colors rounded-sm flex items-center gap-1"
+              className="hidden sm:flex items-center gap-1 h-9 px-3.5 rounded-xl bg-[#111111] text-[#F5F5F3] hover:bg-[#262626] font-mono text-[11px] font-semibold tracking-wider shadow-sm transition-all"
+              title="Curriculum Vitae"
             >
               <span>CV</span>
               <ArrowUpRight className="w-3 h-3 opacity-70" />
             </Link>
-          </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-1.5 text-[#111111] hover:bg-[#EBEBE8] rounded"
-            aria-label="Toggle Navigation Menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden flex items-center justify-center w-9 h-9 rounded-xl bg-[#FFFFFF]/90 backdrop-blur-md border border-[#D9D9D9] shadow-sm hover:bg-[#EBEBE8] transition-colors cursor-pointer"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-4 h-4 text-[#111111]" /> : <Menu className="w-4 h-4 text-[#111111]" />}
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-30 bg-[#F5F5F3] pt-24 px-6 flex flex-col justify-between pb-10 md:hidden">
-          <div className="flex flex-col gap-6">
+        <div className="fixed inset-0 z-50 bg-[#F5F5F3] pt-24 px-6 flex flex-col justify-between pb-10 md:hidden">
+          <div className="flex flex-col gap-5">
+            <div className="flex items-center justify-between pb-3 border-b border-[#D9D9D9]">
+              <span className="font-mono text-xs text-[#737373] tracking-widest uppercase">
+                NAVIGATION
+              </span>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-1 text-[#111111]"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-2xl font-sans font-medium text-[#111111] border-b border-[#D9D9D9] pb-4"
+                className="text-xl font-sans font-medium text-[#111111] border-b border-[#D9D9D9] pb-3"
               >
                 {item.label}
               </a>
             ))}
+
             <Link
               href="/cv"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-2xl font-sans font-medium text-[#111111] border-b border-[#D9D9D9] pb-4 flex items-center justify-between"
+              className="text-xl font-sans font-medium text-[#111111] border-b border-[#D9D9D9] pb-3 flex items-center justify-between"
             >
               <span>CURRICULUM VITAE</span>
-              <ArrowUpRight className="w-6 h-6 text-[#737373]" />
+              <ArrowUpRight className="w-5 h-5 text-[#737373]" />
             </Link>
           </div>
 
-          <div className="flex flex-col gap-3 pt-6 border-t border-[#D9D9D9]">
-            <div className="flex items-center gap-2 text-xs font-mono text-[#111111]">
-              <span className="w-2 h-2 rounded-full bg-[#10B981]" />
-              <span>{personalInfo.availability} · {timeString || "09:42"} WIB</span>
-            </div>
+          <div className="flex flex-col gap-2 pt-6 border-t border-[#D9D9D9]">
             <a
               href={personalInfo.socials.email}
               className="text-xs font-mono text-[#737373] hover:text-[#111111]"

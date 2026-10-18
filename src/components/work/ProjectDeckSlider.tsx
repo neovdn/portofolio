@@ -28,10 +28,12 @@ export function ProjectDeckSlider({ projects }: ProjectDeckSliderProps) {
       ? activeProject.images
       : [activeProject.coverImage];
 
-  // Auto-switch preview image inside active card every 5s if multiple images exist
-  useEffect(() => {
+  // Reset preview image to 0 when project changes
+  const [prevIndex, setPrevIndex] = useState(currentIndex);
+  if (prevIndex !== currentIndex) {
+    setPrevIndex(currentIndex);
     setCurrentImageIndex(0);
-  }, [currentIndex]);
+  }
 
   useEffect(() => {
     if (images.length <= 1) return;
