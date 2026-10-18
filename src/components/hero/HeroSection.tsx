@@ -2,197 +2,217 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { personalInfo } from "@/data/portfolioData";
-import { GitHubIcon, LinkedInIcon, InstagramIcon, EmailIcon } from "@/components/ui/Icons";
-import { FileText, Mail } from "lucide-react";
-import { motion } from "framer-motion";
+import {
+  ArrowDown,
+  ArrowUpRight,
+  FileText,
+  Mail,
+} from "lucide-react";
+import { GitHubIcon, LinkedInIcon, InstagramIcon } from "@/components/ui/Icons";
 
 export function HeroSection() {
+  const emailHref = personalInfo?.socials?.email || `mailto:${personalInfo?.email || ""}`;
+  const githubHref = personalInfo?.socials?.github || "https://github.com";
+  const linkedinHref = personalInfo?.socials?.linkedin || "https://linkedin.com";
+  const instagramHref = personalInfo?.socials?.instagram || "https://instagram.com";
+
   return (
     <section
       id="hero"
-      className="relative h-screen min-h-[640px] max-h-[1080px] overflow-hidden"
+      className="relative min-h-screen w-full overflow-hidden flex flex-col justify-center pt-24 pb-12 lg:py-0"
     >
-      {/* ─── Monochromatic radial spotlight ─────────────────────────────
-          Anchored to the center of the full section so it bleeds across
-          all three columns — the visible "light source" behind the avatar.
-      ──────────────────────────────────────────────────────────────────── */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 flex items-center justify-center"
-      >
-        {/* Outer soft halo */}
-        <div className="absolute w-[140vw] h-[140vh] rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.85)_0%,_rgba(245,245,243,0.4)_50%,_transparent_72%)] blur-3xl" />
-        {/* Mid focused ring */}
-        <div className="absolute w-[70vw] h-[70vw] max-w-[900px] max-h-[900px] rounded-full bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,1)_0%,_rgba(230,230,228,0.75)_40%,_transparent_70%)] blur-2xl" />
-        {/* Bright tight core */}
-        <div className="absolute w-[30vw] h-[30vw] max-w-[420px] max-h-[420px] rounded-full bg-white blur-xl opacity-95" />
-      </div>
+      {/* =========================================================
+          1. CENTERPIECE: 3D AVATAR & STUDIO LIGHTING (TENGAH)
+         ========================================================= */}
+      <div className="pointer-events-none relative lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-14 z-10 flex items-end justify-center order-2 lg:order-none my-4 lg:my-0 lg:-translate-x-[5%]">
 
-      {/* ─── Full-viewport 3-column layout ──────────────────────────────
-          The section is h-screen. We use absolute inset-0 + grid so the
-          avatar column can stretch from navbar to bottom edge.
-      ──────────────────────────────────────────────────────────────────── */}
-      <div className="absolute inset-0 pt-20 grid grid-cols-12 max-w-none">
+        {/* Aura Cahaya Utama — Lembut & menyatu dengan background #F5F5F3 tanpa cincin abu-abu kaku */}
+        <div
+          aria-hidden="true"
+          className="absolute bottom-[6%] left-1/2 -translate-x-1/2 w-[360px] h-[360px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] rounded-full blur-3xl opacity-95"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.85) 38%, rgba(245,245,243,0) 72%)",
+          }}
+        />
 
-        {/* ── LEFT (cols 1-4): intro content, vertically centered ─────── */}
-        <motion.div
-          initial={{ opacity: 0, x: -28 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="col-span-4 flex flex-col justify-center px-10 lg:px-16 xl:px-20 pb-16 z-10"
-        >
-          {/* Index label */}
-          <div className="flex items-center gap-3 mb-6">
-            <span className="font-mono text-[10px] text-[#737373] tracking-widest uppercase">
-              00 / INTRODUCTION
-            </span>
-            <div className="h-px w-8 bg-[#D9D9D9]" />
-          </div>
+        {/* Soft Rim Shadow di belakang tubuh karakter untuk memberi dimensi kedalaman */}
+        <div
+          aria-hidden="true"
+          className="absolute bottom-[12%] left-1/2 -translate-x-1/2 w-[240px] h-[320px] lg:w-[340px] lg:h-[440px] rounded-full bg-[#111111]/[0.05] blur-[70px]"
+        />
 
-          {/* Name */}
-          <h1 className="font-sans text-4xl sm:text-5xl lg:text-[3.2rem] xl:text-[3.6rem] font-bold tracking-[-0.03em] text-[#111111] leading-[1.05]">
-            {personalInfo.name}
-          </h1>
-
-          {/* Title */}
-          <p className="font-mono text-xs sm:text-sm text-[#737373] tracking-[0.2em] uppercase mt-3">
-            {personalInfo.title}
-          </p>
-
-          {/* Tagline */}
-          <p className="font-sans text-lg sm:text-xl text-[#111111] font-medium leading-snug mt-8 max-w-[340px]">
-            {personalInfo.tagline}
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center gap-3 mt-8">
-            <a
-              href="#work"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#111111] text-[#F5F5F3] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#262626] transition-all rounded-full shadow-md"
-            >
-              <span>EXPLORE WORK</span>
-              <span>↓</span>
-            </a>
-
-            <a
-              href="/documents/cv.pdf"
-              download="Bernhardth_Neo_Videan_CV.pdf"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#FFFFFF]/90 text-[#111111] border border-[#C8C8C8] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#EBEBE8] transition-all rounded-full shadow-sm"
-            >
-              <FileText className="w-4 h-4" />
-              <span>DOWNLOAD CV</span>
-            </a>
-          </div>
-        </motion.div>
-
-        {/* ── CENTER (cols 5-8): avatar — tall, bottom-anchored ────────── */}
-        <div className="col-span-4 relative flex items-end justify-center overflow-hidden z-10">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.93 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.75, delay: 0.06, ease: "easeOut" }}
-            className="relative w-full flex items-end justify-center"
-          >
-            <Image
-              src="/image/avatar.webp"
-              alt="Bernhardth Neo Videan — 3D character portrait"
-              width={800}
-              height={597}
-              priority
-              className="w-auto object-contain select-none pointer-events-none"
-              style={{ height: "80vh", maxHeight: "820px" }}
-            />
-          </motion.div>
+        {/* Wrapper Gambar 3D — Diperbesar mendekati full-page & diberi mask-image agar bawahnya memudar halus */}
+        <div className="relative z-10 flex items-end justify-center">
+          <Image
+            src="/image/avatar.webp"
+            alt={personalInfo?.name || "Bernhardth Neo Videan"}
+            width={950}
+            height={1150}
+            priority
+            className="h-[54vh] sm:h-[68vh] lg:h-[86vh] max-h-[880px] w-auto object-contain object-bottom select-none drop-shadow-[0_20px_40px_rgba(17,17,17,0.10)]"
+            style={{
+              maskImage: "linear-gradient(to top, transparent 0%, rgba(0,0,0,0.5) 1.5%, black 4%)",
+              WebkitMaskImage: "linear-gradient(to top, transparent 0%, rgba(0,0,0,0.5) 1.5%, black 4%)",
+            }}
+          />
         </div>
-
-        {/* ── RIGHT (cols 9-12): about me, bio, buttons, socials ──────── */}
-        <motion.div
-          initial={{ opacity: 0, x: 28 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.12, ease: "easeOut" }}
-          className="col-span-4 flex flex-col justify-center px-10 lg:px-14 xl:px-16 pb-16 z-10"
-        >
-          {/* About heading */}
-          <h2 className="font-sans text-4xl sm:text-5xl lg:text-[3.2rem] xl:text-[3.6rem] font-bold tracking-[-0.03em] text-[#111111] leading-[1.05]">
-            About Me
-          </h2>
-
-          {/* Bio — same size as tagline on left for visual balance */}
-          <p className="font-sans text-base sm:text-lg text-[#555555] leading-relaxed mt-6 max-w-[360px]">
-            {personalInfo.shortBio}
-          </p>
-
-          {/* Buttons */}
-          <div className="flex flex-wrap items-center gap-3 mt-8">
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#111111] text-[#F5F5F3] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#262626] transition-all rounded-full shadow-md"
-            >
-              <Mail className="w-4 h-4" />
-              <span>GET IN TOUCH</span>
-              <span>↓</span>
-            </a>
-
-            <a
-              href={personalInfo.socials.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#FFFFFF]/90 text-[#111111] border border-[#C8C8C8] font-mono text-xs font-bold uppercase tracking-wider hover:bg-[#EBEBE8] transition-all rounded-full shadow-sm"
-            >
-              <GitHubIcon className="w-4 h-4" />
-              <span>GITHUB ↗</span>
-            </a>
-          </div>
-
-          {/* Social icons */}
-          <div className="flex items-center gap-2.5 mt-6">
-            <a
-              href={personalInfo.socials.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="w-9 h-9 rounded-full border border-[#D9D9D9] bg-[#FFFFFF]/80 text-[#444444] hover:bg-[#111111] hover:text-[#F5F5F3] hover:border-[#111111] flex items-center justify-center transition-all duration-200"
-            >
-              <LinkedInIcon className="w-4 h-4" />
-            </a>
-            <a
-              href={personalInfo.socials.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="w-9 h-9 rounded-full border border-[#D9D9D9] bg-[#FFFFFF]/80 text-[#444444] hover:bg-[#111111] hover:text-[#F5F5F3] hover:border-[#111111] flex items-center justify-center transition-all duration-200"
-            >
-              <GitHubIcon className="w-4 h-4" />
-            </a>
-            <a
-              href={personalInfo.socials.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="w-9 h-9 rounded-full border border-[#D9D9D9] bg-[#FFFFFF]/80 text-[#444444] hover:bg-[#111111] hover:text-[#F5F5F3] hover:border-[#111111] flex items-center justify-center transition-all duration-200"
-            >
-              <InstagramIcon className="w-4 h-4" />
-            </a>
-            <a
-              href={personalInfo.socials.email}
-              aria-label="Email"
-              className="w-9 h-9 rounded-full border border-[#D9D9D9] bg-[#FFFFFF]/80 text-[#444444] hover:bg-[#111111] hover:text-[#F5F5F3] hover:border-[#111111] flex items-center justify-center transition-all duration-200"
-            >
-              <EmailIcon className="w-4 h-4" />
-            </a>
-          </div>
-        </motion.div>
       </div>
 
-      {/* ─── Gradient fade — blends avatar feet into next section ────────
-          Positioned at the very bottom of the section, z-20 so it renders
-          on top of the avatar. Tall enough to fully dissolve the feet.
-      ──────────────────────────────────────────────────────────────────── */}
+      {/* =========================================================
+          2. KONTEN UTAMA (KIRI & KANAN SEJAJAR DENGAN NAVBAR)
+         ========================================================= */}
+      <div className="relative z-20 w-full px-4 sm:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 items-center gap-10 lg:gap-6">
+
+          {/* ---------------- SISI KIRI (4 Kolom) ---------------- */}
+          <div className="lg:col-span-4 flex flex-col items-start text-left order-1 lg:order-none">
+            {/* Eyebrow: Diperbesar dan dipertegas agar terbaca jelas */}
+            <div className="inline-flex items-center gap-3 mb-3.5">
+              <span className="font-mono text-xs sm:text-[13px] font-semibold uppercase tracking-[0.2em] text-[#444444]">
+                00 / INTRODUCTION
+              </span>
+              <span className="h-[1.5px] w-10 bg-[#737373]" />
+            </div>
+
+            {/* Nama */}
+            <h1 className="text-4xl sm:text-5xl xl:text-[52px] font-bold tracking-tight text-[#111111] leading-[1.08]">
+              Bernhardth
+              <br />
+              Neo Videan
+            </h1>
+
+            {/* Role */}
+            <p className="mt-3.5 font-mono text-xs sm:text-[13px] font-medium uppercase tracking-[0.22em] text-[#737373]">
+              FULL-STACK DEVELOPER
+            </p>
+
+            {/* Tagline Singkat */}
+            <p className="mt-4 text-[15px] sm:text-base leading-relaxed text-[#444444] max-w-[330px]">
+              I build web, mobile, and AI-powered digital products.
+            </p>
+
+            {/* CTA Buttons Kiri */}
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <a
+                href="#work"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#111111] px-5 py-3 font-mono text-[11px] font-semibold uppercase tracking-wider text-[#F5F5F3] shadow-sm transition-all hover:bg-[#262626]"
+              >
+                <span>EXPLORE WORK</span>
+                <ArrowDown className="w-3.5 h-3.5" />
+              </a>
+
+              <Link
+                href="/documents/cv.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#D9D9D9] bg-[#FFFFFF]/90 backdrop-blur-md px-5 py-3 font-mono text-[11px] font-semibold uppercase tracking-wider text-[#111111] shadow-sm transition-all hover:border-[#111111] hover:bg-[#F5F5F3]"
+              >
+                <FileText className="w-3.5 h-3.5 text-[#444444]" />
+                <span>DOWNLOAD CV</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* ---------------- SPACER TENGAH UNTUK 3D ASSET (4 Kolom) ---------------- */}
+          <div className="hidden lg:block lg:col-span-4" aria-hidden="true" />
+
+          {/* ---------------- SISI KANAN (4 Kolom) ---------------- */}
+          {/* lg:pt-6 menyeimbangkan posisi vertikal dengan eyebrow di sisi kiri */}
+          <div className="lg:col-span-4 flex flex-col items-start lg:pl-4 text-left order-3 lg:order-none lg:pt-6">
+            <h2 className="text-4xl sm:text-5xl xl:text-[48px] font-bold tracking-tight text-[#111111] leading-[1.08]">
+              About Me
+            </h2>
+
+            {/* Ukuran teks 14px-15px & max-w-[410px] agar tampil proporsional dalam 3-4 baris */}
+            <p className="mt-4 text-sm sm:text-[14.5px] leading-[1.68] text-[#444444] max-w-[410px]">
+              Engineering thoughtful web applications, cross-platform mobile
+              experiences, and autonomous AI systems with a deep focus on
+              craftsmanship, performance, and user experience.
+            </p>
+
+            {/* CTA Buttons Kanan */}
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <a
+                href="#contact"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#111111] px-5 py-3 font-mono text-[11px] font-semibold uppercase tracking-wider text-[#F5F5F3] shadow-sm transition-all hover:bg-[#262626]"
+              >
+                <Mail className="w-3.5 h-3.5" />
+                <span>GET IN TOUCH</span>
+                <ArrowDown className="w-3.5 h-3.5" />
+              </a>
+
+              <a
+                href={githubHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#D9D9D9] bg-[#FFFFFF]/90 backdrop-blur-md px-5 py-3 font-mono text-[11px] font-semibold uppercase tracking-wider text-[#111111] shadow-sm transition-all hover:border-[#111111] hover:bg-[#F5F5F3]"
+              >
+                <GitHubIcon className="w-3.5 h-3.5 text-[#111111]" />
+                <span>GITHUB</span>
+                <ArrowUpRight className="w-3.5 h-3.5 opacity-70" />
+              </a>
+            </div>
+
+            {/* Social Icons */}
+            <div className="mt-6 flex items-center gap-2.5">
+              <a
+                href={linkedinHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D9D9D9] bg-[#FFFFFF]/90 text-[#444444] shadow-xs transition-all hover:border-[#111111] hover:text-[#111111] hover:bg-[#FFFFFF]"
+              >
+                <LinkedInIcon className="w-3.5 h-3.5" />
+              </a>
+
+              <a
+                href={githubHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D9D9D9] bg-[#FFFFFF]/90 text-[#444444] shadow-xs transition-all hover:border-[#111111] hover:text-[#111111] hover:bg-[#FFFFFF]"
+              >
+                <GitHubIcon className="w-3.5 h-3.5" />
+              </a>
+
+              <a
+                href={instagramHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D9D9D9] bg-[#FFFFFF]/90 text-[#444444] shadow-xs transition-all hover:border-[#111111] hover:text-[#111111] hover:bg-[#FFFFFF]"
+              >
+                <InstagramIcon className="w-3.5 h-3.5" />
+              </a>
+
+              <a
+                href={emailHref}
+                aria-label="Email"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#D9D9D9] bg-[#FFFFFF]/90 text-[#444444] shadow-xs transition-all hover:border-[#111111] hover:text-[#111111] hover:bg-[#FFFFFF]"
+              >
+                <Mail className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* =========================================================
+          3. SMOOTH BOTTOM GRADIENT TRANSITION KE SECTION BERIKUTNYA
+         ========================================================= */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 z-20 bg-gradient-to-b from-transparent to-[#F5F5F3]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-16 sm:h-20"
+        style={{
+          background: "linear-gradient(to top, #F5F5F3 0%, rgba(245,245,243,0.9) 20%, rgba(245,245,243,0.7) 40%, rgba(245,245,243,0.45) 58%, rgba(245,245,243,0.25) 72%, rgba(245,245,243,0.1) 85%, rgba(245,245,243,0) 100%)",
+        }}
       />
     </section>
   );
 }
+
+export default HeroSection;

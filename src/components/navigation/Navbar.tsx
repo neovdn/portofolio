@@ -85,7 +85,7 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
           visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
         )}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
+        <div className="relative max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
 
           {/* Brand — bare black box, no container */}
           <Link
@@ -96,8 +96,8 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
             NV
           </Link>
 
-          {/* Center Navigation Pill (Desktop) */}
-          <nav className="hidden md:flex items-center gap-0.5 px-2.5 py-2 rounded-full bg-[#FFFFFF]/90 backdrop-blur-md border border-[#D9D9D9] shadow-sm">
+          {/* Center Navigation Pill (Desktop) — Dikunci tepat di sumbu tengah 50% layar */}
+          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-0.5 px-2.5 py-2 rounded-full bg-[#FFFFFF]/90 backdrop-blur-md border border-[#D9D9D9] shadow-sm">
             {navItems.map((item) => {
               const isActive = isHomePage && activeSection === item.id;
               return (
