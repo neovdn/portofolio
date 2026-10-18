@@ -89,8 +89,26 @@ export function Navbar({ onOpenCommandPalette }: NavbarProps) {
 
           {/* Brand — bare black box, no container */}
           <Link
-            href="/"
-            className="font-mono text-xs font-bold px-2 py-1 bg-[#111111] text-[#F5F5F3] hover:bg-[#262626] transition-colors"
+            href={isHomePage ? "#hero" : "/#hero"}
+            onClick={(e) => {
+              if (isHomePage) {
+                e.preventDefault();
+                const lenis = (window as unknown as { __lenis?: { scrollTo: (target: number | HTMLElement | string, options?: object) => void } }).__lenis;
+                if (lenis) {
+                  lenis.scrollTo(0, { duration: 1.0 });
+                } else {
+                  const heroEl = document.getElementById("hero");
+                  if (heroEl) {
+                    heroEl.scrollIntoView({ behavior: "smooth" });
+                  } else {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                }
+                window.history.pushState(null, "", "#hero");
+                setActiveSection("hero");
+              }
+            }}
+            className="font-mono text-xs font-bold px-2 py-1 bg-[#111111] text-[#F5F5F3] hover:bg-[#262626] transition-colors cursor-pointer"
             aria-label="Home — Bernhardth Neo Videan"
           >
             NV

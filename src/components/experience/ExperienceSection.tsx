@@ -111,7 +111,13 @@ export function ExperienceSection() {
     >
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 lg:mb-14 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 lg:mb-14 gap-6"
+        >
           <div>
             <div className="flex items-center gap-3 mb-3">
               <span className="font-mono text-xs text-[#737373] tracking-widest uppercase">
@@ -133,10 +139,14 @@ export function ExperienceSection() {
               <span>PRESENT — 2021</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Scrollable Viewport Wrapper */}
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.85, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           data-lenis-prevent="true"
           className="relative bg-[#F5F5F3] rounded-3xl p-2 sm:p-4 border border-[#E0E0DC] overscroll-contain"
           onMouseEnter={() => setIsHovered(true)}
@@ -301,7 +311,7 @@ export function ExperienceSection() {
               canScrollDown ? "opacity-100" : "opacity-0"
             }`}
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

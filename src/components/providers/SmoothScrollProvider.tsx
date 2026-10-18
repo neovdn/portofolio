@@ -30,6 +30,8 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       touchMultiplier: 1.5,
     });
 
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+
     let animationFrameId: number;
 
     function raf(time: number) {
@@ -46,12 +48,45 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     } else {
       const targetEl = document.querySelector(window.location.hash);
       if (targetEl) {
-        lenis.scrollTo(targetEl as HTMLElement, { offset: -60 });
+        lenis.scrollTo(targetEl as HTMLElement, {
+          offset: window.location.hash === "#hero" ? 0 : -60,
+        });
       }
     }
 
+    // Intercept internal hash anchor clicks for seamless Lenis smooth scrolling
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest("a");
+      if (!target) return;
+      const href = target.getAttribute("href");
+      if (!href) return;
+
+      let hash = "";
+      if (href.startsWith("#")) {
+        hash = href;
+      } else if (href.startsWith("/#") && pathname === "/") {
+        hash = href.slice(1);
+      }
+
+      if (hash) {
+        const targetEl = document.querySelector(hash);
+        if (targetEl) {
+          e.preventDefault();
+          lenis.scrollTo(targetEl as HTMLElement, {
+            offset: hash === "#hero" ? 0 : -60,
+            duration: 1.0,
+          });
+          window.history.pushState(null, "", hash);
+        }
+      }
+    };
+
+    document.addEventListener("click", handleAnchorClick);
+
     return () => {
+      document.removeEventListener("click", handleAnchorClick);
       cancelAnimationFrame(animationFrameId);
+      delete (window as unknown as { __lenis?: Lenis }).__lenis;
       lenis.destroy();
     };
   }, [pathname]);

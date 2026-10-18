@@ -11,12 +11,85 @@ import {
   Mail,
 } from "lucide-react";
 import { GitHubIcon, LinkedInIcon, InstagramIcon } from "@/components/ui/Icons";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
+
+const ease = [0.16, 1, 0.3, 1] as const;
+
+// Desktop Left column: Slides from left to right
+const leftColVariants: Variants = {
+  hidden: { opacity: 0, x: -55 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.9,
+      ease,
+      staggerChildren: 0.09,
+      delayChildren: 0.18,
+    },
+  },
+};
+
+// Desktop Right column: Slides from right to left
+const rightColVariants: Variants = {
+  hidden: { opacity: 0, x: 55 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.9,
+      ease,
+      staggerChildren: 0.09,
+      delayChildren: 0.28,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease },
+  },
+};
+
+const desktopAvatarVariants: Variants = {
+  hidden: { opacity: 0, y: 35, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 1.15,
+      ease,
+      delay: 0.08,
+    },
+  },
+};
+
+const auraVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.85 },
+  visible: {
+    opacity: 0.95,
+    scale: 1,
+    transition: {
+      duration: 1.35,
+      ease: "easeOut",
+      delay: 0.05,
+    },
+  },
+};
 
 export function HeroSection() {
   const emailHref = personalInfo?.socials?.email || `mailto:${personalInfo?.email || ""}`;
   const githubHref = personalInfo?.socials?.github || "https://github.com";
   const linkedinHref = personalInfo?.socials?.linkedin || "https://linkedin.com";
   const instagramHref = personalInfo?.socials?.instagram || "https://instagram.com";
+
+  const { scrollY } = useScroll();
+  const desktopAvatarY = useTransform(scrollY, [0, 600], [0, 60]);
+  const desktopAvatarOpacity = useTransform(scrollY, [0, 500], [1, 0.35]);
 
   return (
     <section
@@ -28,8 +101,12 @@ export function HeroSection() {
          ========================================================= */}
 
       {/* ---- MOBILE & TABLET AVATAR (< lg) ---- */}
-      {/* Positioned at the top behind hero content, creating an editorial highlight effect */}
-      <div className="lg:hidden absolute inset-x-0 top-0 h-[48vh] sm:h-[52vh] md:h-[56vh] min-h-[350px] max-h-[480px] sm:max-h-[540px] md:max-h-[600px] z-10 pointer-events-none flex items-start justify-center overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease }}
+        className="lg:hidden absolute inset-x-0 top-0 h-[48vh] sm:h-[52vh] md:h-[56vh] min-h-[350px] max-h-[480px] sm:max-h-[540px] md:max-h-[600px] z-10 pointer-events-none flex items-start justify-center overflow-hidden"
+      >
         {/* Aura Cahaya — mobile/tablet scale */}
         <div
           aria-hidden="true"
@@ -70,13 +147,19 @@ export function HeroSection() {
             background: "linear-gradient(to top, #F5F5F3 0%, rgba(245,245,243,0.98) 25%, rgba(245,245,243,0.75) 55%, rgba(245,245,243,0.2) 80%, rgba(245,245,243,0) 100%)",
           }}
         />
-      </div>
+      </motion.div>
 
       {/* ---- DESKTOP AVATAR (lg+) — Original layout preserved exactly ---- */}
-      <div className="pointer-events-none hidden lg:flex absolute inset-x-0 bottom-0 top-14 z-10 items-end justify-center lg:-translate-x-[5%]">
+      <motion.div
+        style={{ y: desktopAvatarY, opacity: desktopAvatarOpacity }}
+        className="pointer-events-none hidden lg:flex absolute inset-x-0 bottom-0 top-14 z-10 items-end justify-center lg:-translate-x-[5%]"
+      >
         {/* Aura Cahaya Utama — Lembut & menyatu dengan background #F5F5F3 tanpa cincin abu-abu kaku */}
-        <div
+        <motion.div
           aria-hidden="true"
+          variants={auraVariants}
+          initial="hidden"
+          animate="visible"
           className="absolute bottom-[6%] left-1/2 -translate-x-1/2 lg:w-[680px] lg:h-[680px] rounded-full blur-3xl opacity-95"
           style={{
             background:
@@ -85,13 +168,21 @@ export function HeroSection() {
         />
 
         {/* Soft Rim Shadow di belakang tubuh karakter untuk memberi dimensi kedalaman */}
-        <div
+        <motion.div
           aria-hidden="true"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2, delay: 0.2 }}
           className="absolute bottom-[12%] left-1/2 -translate-x-1/2 lg:w-[340px] lg:h-[440px] rounded-full bg-[#111111]/[0.05] blur-[70px]"
         />
 
         {/* Wrapper Gambar 3D — Diperbesar mendekati full-page & diberi mask-image agar bawahnya memudar halus */}
-        <div className="relative z-10 flex items-end justify-center">
+        <motion.div
+          variants={desktopAvatarVariants}
+          initial="hidden"
+          animate="visible"
+          className="relative z-10 flex items-end justify-center"
+        >
           <Image
             src="/image/avatar.webp"
             alt={personalInfo?.name || "Bernhardth Neo Videan"}
@@ -104,8 +195,8 @@ export function HeroSection() {
               WebkitMaskImage: "linear-gradient(to top, transparent 0%, rgba(0,0,0,0.5) 1.5%, black 4%)",
             }}
           />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* =========================================================
           2. KONTEN UTAMA (KIRI & KANAN SEJAJAR DENGAN NAVBAR)
@@ -115,7 +206,12 @@ export function HeroSection() {
       <div className="lg:hidden relative z-20 w-full px-5 sm:px-8 md:px-10">
 
         {/* Intro block — positioned smoothly below avatar focal point */}
-        <div className="flex flex-col items-center text-center mt-[38vh] sm:mt-[42vh] md:mt-[45vh]">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, delay: 0.15, ease }}
+          className="flex flex-col items-center text-center mt-[38vh] sm:mt-[42vh] md:mt-[45vh]"
+        >
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-3 mb-3">
             <span className="font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-[#444444]">
@@ -161,7 +257,7 @@ export function HeroSection() {
               <span>DOWNLOAD CV</span>
             </Link>
           </div>
-        </div>
+        </motion.div>
 
         {/* Subtle visual separator */}
         <div className="flex items-center justify-center gap-4 mt-10 sm:mt-12 mb-8 sm:mb-10">
@@ -171,7 +267,13 @@ export function HeroSection() {
         </div>
 
         {/* About Me block — tablet gets a 2-column layout */}
-        <div className="md:flex md:items-start md:gap-10 md:max-w-2xl md:mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.85, ease }}
+          className="md:flex md:items-start md:gap-10 md:max-w-2xl md:mx-auto"
+        >
           <div className="flex flex-col items-center text-center md:items-start md:text-left md:flex-1">
             <h2 className="text-[28px] sm:text-[32px] md:text-4xl font-bold tracking-tight text-[#111111] leading-[1.08]">
               About Me
@@ -249,7 +351,7 @@ export function HeroSection() {
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* ---- DESKTOP CONTENT (lg+) — Original layout preserved exactly ---- */}
@@ -257,34 +359,48 @@ export function HeroSection() {
         <div className="max-w-7xl mx-auto grid grid-cols-12 items-center gap-6">
 
           {/* ---------------- SISI KIRI (4 Kolom) ---------------- */}
-          <div className="col-span-4 flex flex-col items-start text-left">
-            {/* Eyebrow: Diperbesar dan dipertegas agar terbaca jelas */}
-            <div className="inline-flex items-center gap-3 mb-3.5">
+          <motion.div
+            variants={leftColVariants}
+            initial="hidden"
+            animate="visible"
+            className="col-span-4 flex flex-col items-start text-left"
+          >
+            {/* Eyebrow */}
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-3 mb-3.5">
               <span className="font-mono text-[13px] font-semibold uppercase tracking-[0.2em] text-[#444444]">
                 00 / INTRODUCTION
               </span>
               <span className="h-[1.5px] w-10 bg-[#737373]" />
-            </div>
+            </motion.div>
 
             {/* Nama */}
-            <h1 className="text-4xl sm:text-5xl xl:text-[52px] font-bold tracking-tight text-[#111111] leading-[1.08]">
+            <motion.h1
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl xl:text-[52px] font-bold tracking-tight text-[#111111] leading-[1.08]"
+            >
               Bernhardth
               <br />
               Neo Videan
-            </h1>
+            </motion.h1>
 
             {/* Role */}
-            <p className="mt-3.5 font-mono text-[13px] font-medium uppercase tracking-[0.22em] text-[#737373]">
+            <motion.p
+              variants={itemVariants}
+              className="mt-3.5 font-mono text-[13px] font-medium uppercase tracking-[0.22em] text-[#737373]"
+            >
               FULL-STACK DEVELOPER
-            </p>
+            </motion.p>
 
             {/* Tagline Singkat */}
-            <p className="mt-4 text-base leading-relaxed text-[#444444] max-w-[330px]">
+            <motion.p
+              variants={itemVariants}
+              className="mt-4 text-base leading-relaxed text-[#444444] max-w-[330px]"
+            >
               I build web, mobile, and AI-powered digital products.
-            </p>
+            </motion.p>
 
             {/* CTA Buttons Kiri */}
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <motion.div variants={itemVariants} className="mt-7 flex flex-wrap items-center gap-3">
               <a
                 href="#work"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-[#111111] px-5 py-3 font-mono text-[11px] font-semibold uppercase tracking-wider text-[#F5F5F3] shadow-sm transition-all hover:bg-[#262626]"
@@ -302,28 +418,39 @@ export function HeroSection() {
                 <FileText className="w-3.5 h-3.5 text-[#444444]" />
                 <span>DOWNLOAD CV</span>
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* ---------------- SPACER TENGAH UNTUK 3D ASSET (4 Kolom) ---------------- */}
           <div className="col-span-4" aria-hidden="true" />
 
           {/* ---------------- SISI KANAN (4 Kolom) ---------------- */}
           {/* lg:pt-6 menyeimbangkan posisi vertikal dengan eyebrow di sisi kiri */}
-          <div className="col-span-4 flex flex-col items-start lg:pl-4 text-left lg:pt-6">
-            <h2 className="text-4xl sm:text-5xl xl:text-[48px] font-bold tracking-tight text-[#111111] leading-[1.08]">
+          <motion.div
+            variants={rightColVariants}
+            initial="hidden"
+            animate="visible"
+            className="col-span-4 flex flex-col items-start lg:pl-4 text-left lg:pt-6"
+          >
+            <motion.h2
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl xl:text-[48px] font-bold tracking-tight text-[#111111] leading-[1.08]"
+            >
               About Me
-            </h2>
+            </motion.h2>
 
             {/* Ukuran teks 14px-15px & max-w-[410px] agar tampil proporsional dalam 3-4 baris */}
-            <p className="mt-4 text-[14.5px] leading-[1.68] text-[#444444] max-w-[410px]">
+            <motion.p
+              variants={itemVariants}
+              className="mt-4 text-[14.5px] leading-[1.68] text-[#444444] max-w-[410px]"
+            >
               Engineering thoughtful web applications, cross-platform mobile
               experiences, and autonomous AI systems with a deep focus on
               craftsmanship, performance, and user experience.
-            </p>
+            </motion.p>
 
             {/* CTA Buttons Kanan */}
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <motion.div variants={itemVariants} className="mt-7 flex flex-wrap items-center gap-3">
               <a
                 href="#contact"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-[#111111] px-5 py-3 font-mono text-[11px] font-semibold uppercase tracking-wider text-[#F5F5F3] shadow-sm transition-all hover:bg-[#262626]"
@@ -343,10 +470,10 @@ export function HeroSection() {
                 <span>GITHUB</span>
                 <ArrowUpRight className="w-3.5 h-3.5 opacity-70" />
               </a>
-            </div>
+            </motion.div>
 
             {/* Social Icons */}
-            <div className="mt-6 flex items-center gap-2.5">
+            <motion.div variants={itemVariants} className="mt-6 flex items-center gap-2.5">
               <a
                 href={linkedinHref}
                 target="_blank"
@@ -384,8 +511,8 @@ export function HeroSection() {
               >
                 <Mail className="w-3.5 h-3.5" />
               </a>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
         </div>
       </div>

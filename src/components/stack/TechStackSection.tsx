@@ -1,6 +1,7 @@
 "use client";
 
 import React, { ComponentType } from "react";
+import { motion } from "framer-motion";
 import {
   SiNextdotjs,
   SiReact,
@@ -164,7 +165,13 @@ export function TechStackSection() {
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 mb-8 sm:mb-10">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4"
+        >
           <div>
             <div className="flex items-center gap-3 mb-2.5">
               <span className="font-mono text-xs text-[#737373] tracking-widest uppercase">
@@ -180,11 +187,17 @@ export function TechStackSection() {
           <p className="font-mono text-xs text-[#737373] max-w-sm sm:text-right leading-relaxed">
             Production-tested stack spanning full-stack web, cross-platform mobile, relational engines, and DevOps.
           </p>
-        </div>
+        </motion.div>
       </div>
 
       {/* Sliding Marquee Tracks Container */}
-      <div className="relative w-full space-y-3.5 sm:space-y-4">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.85, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+        className="relative w-full space-y-3.5 sm:space-y-4"
+      >
         {/* Left & Right Soft Vignette Fade Gradients */}
         <div className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-28 bg-gradient-to-r from-[#F5F5F3] to-transparent z-10" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-28 bg-gradient-to-l from-[#F5F5F3] to-transparent z-10" />
@@ -206,7 +219,7 @@ export function TechStackSection() {
             ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
