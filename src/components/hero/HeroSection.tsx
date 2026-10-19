@@ -11,7 +11,7 @@ import {
   Mail,
 } from "lucide-react";
 import { GitHubIcon, LinkedInIcon, InstagramIcon } from "@/components/ui/Icons";
-import { motion, useScroll, useTransform, Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -68,18 +68,6 @@ const desktopAvatarVariants: Variants = {
   },
 };
 
-const auraVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.85 },
-  visible: {
-    opacity: 0.95,
-    scale: 1,
-    transition: {
-      duration: 1.35,
-      ease: "easeOut",
-      delay: 0.05,
-    },
-  },
-};
 
 export function HeroSection() {
   const emailHref = personalInfo?.socials?.email || `mailto:${personalInfo?.email || ""}`;
@@ -87,9 +75,6 @@ export function HeroSection() {
   const linkedinHref = personalInfo?.socials?.linkedin || "https://linkedin.com";
   const instagramHref = personalInfo?.socials?.instagram || "https://instagram.com";
 
-  const { scrollY } = useScroll();
-  const desktopAvatarY = useTransform(scrollY, [0, 600], [0, 60]);
-  const desktopAvatarOpacity = useTransform(scrollY, [0, 500], [1, 0.35]);
 
   return (
     <section
@@ -120,7 +105,7 @@ export function HeroSection() {
         {/* Soft Rim Shadow */}
         <div
           aria-hidden="true"
-          className="absolute top-12 sm:top-14 md:top-10 left-1/2 -translate-x-1/2 w-[190px] h-[240px] sm:w-[230px] sm:h-[290px] md:w-[270px] md:h-[330px] rounded-full bg-[#111111]/[0.04] blur-[55px]"
+          className="absolute top-12 sm:top-14 md:top-10 left-1/2 -translate-x-1/2 w-[190px] h-[240px] sm:w-[230px] sm:h-[290px] md:w-[270px] md:h-[330px] rounded-full bg-[#111111]/[0.04] blur-[55px] gpu-layer"
         />
 
         {/* Avatar image — sits behind content, fades at bottom into content zone */}
@@ -151,38 +136,35 @@ export function HeroSection() {
 
       {/* ---- DESKTOP AVATAR (lg+) — Original layout preserved exactly ---- */}
       <motion.div
-        style={{ y: desktopAvatarY, opacity: desktopAvatarOpacity }}
+        variants={desktopAvatarVariants}
+        initial="hidden"
+        animate="visible"
         className="pointer-events-none hidden lg:flex absolute inset-x-0 bottom-0 top-14 z-10 items-end justify-center lg:-translate-x-[5%]"
       >
         {/* Aura Cahaya Utama — Lembut & menyatu dengan background #F5F5F3 tanpa cincin abu-abu kaku */}
-        <motion.div
+        <div
           aria-hidden="true"
-          variants={auraVariants}
-          initial="hidden"
-          animate="visible"
           className="absolute bottom-[6%] left-1/2 -translate-x-1/2 lg:w-[680px] lg:h-[680px] rounded-full blur-3xl opacity-95"
           style={{
             background:
               "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.85) 38%, rgba(245,245,243,0) 72%)",
+            transform: "translateZ(0)",
+            willChange: "transform",
           }}
         />
 
         {/* Soft Rim Shadow di belakang tubuh karakter untuk memberi dimensi kedalaman */}
-        <motion.div
+        <div
           aria-hidden="true"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, delay: 0.2 }}
           className="absolute bottom-[12%] left-1/2 -translate-x-1/2 lg:w-[340px] lg:h-[440px] rounded-full bg-[#111111]/[0.05] blur-[70px]"
+          style={{
+            transform: "translateZ(0)",
+            willChange: "transform",
+          }}
         />
 
         {/* Wrapper Gambar 3D — Diperbesar mendekati full-page & diberi mask-image agar bawahnya memudar halus */}
-        <motion.div
-          variants={desktopAvatarVariants}
-          initial="hidden"
-          animate="visible"
-          className="relative z-10 flex items-end justify-center"
-        >
+        <div className="relative z-10 flex items-end justify-center">
           <Image
             src="/image/avatar.webp"
             alt={personalInfo?.name || "Bernhardth Neo Videan"}
@@ -195,8 +177,9 @@ export function HeroSection() {
               WebkitMaskImage: "linear-gradient(to top, transparent 0%, rgba(0,0,0,0.5) 1.5%, black 4%)",
             }}
           />
-        </motion.div>
+        </div>
       </motion.div>
+
 
       {/* =========================================================
           2. KONTEN UTAMA (KIRI & KANAN SEJAJAR DENGAN NAVBAR)

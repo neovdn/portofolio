@@ -124,3 +124,9 @@ body {
   }
 }
 
+/* GPU compositing layer — apply to heavy blur / decorative elements */
+.gpu-layer {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
