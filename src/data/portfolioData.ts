@@ -20,9 +20,177 @@ export const personalInfo: PersonalInfo = {
 
 export const projects: Project[] = [
   {
+    id: "appliedin",
+    slug: "appliedin",
+    number: "01",
+    title: "AppliedIn",
+    subtitle: "Job Application Tracker & Recruitment Funnel Analytics",
+    tagline:
+      "Modern web-based job application management platform and recruitment funnel analytics engine engineered with empathetic UX and localized hiring workflows.",
+    description:
+      "A comprehensive job application tracking platform engineered for Indonesian jobseekers to organize, monitor, and analyze recruitment funnels in one place. Built with Laravel 12, Inertia.js v2, and React 18, featuring rapid application logging, duplicate submission detection, interview schedule management, and real-time recruitment funnel analytics powered by PostgreSQL.",
+    category: "Full-Stack Web Application",
+    year: "2026",
+    technologies: [
+      "Laravel 12.x",
+      "React 18",
+      "Inertia.js v2",
+      "TypeScript",
+      "Tailwind CSS",
+      "PostgreSQL",
+      "Pest PHP",
+      "Recharts",
+    ],
+    liveUrl: "https://www.appliedin.web.id/",
+    githubUrl: undefined,
+    coverImage: "/image/appliedin1.webp",
+    images: [
+      "/image/appliedin1.webp",
+      "/image/appliedin2.webp",
+      "/image/appliedin3.webp",
+    ],
+    featured: true,
+    caseStudy: {
+      overview:
+        "AppliedIn is a modern web-based job application tracker and career funnel analytics platform built to eliminate the administrative friction of job hunting for jobseekers in Indonesia. Active candidates frequently submit dozens of applications across fragmented channels—including JobStreet, LinkedIn, Glints, Kalibrr, direct email, and corporate career portals. Without a centralized tracking mechanism, applicants often lose interview meeting links, forget submission specifics, or submit duplicate applications to the same openings. AppliedIn provides a structured, responsive, and empathetic workspace tailored specifically to the realities of the Indonesian hiring landscape.",
+      problem:
+        "Job hunting across disconnected job boards causes severe organizational overhead and mental fatigue. Applicants lose track of interview dates across multiple conferencing tools, duplicate submissions to identical positions, and struggle to identify why applications fail. Existing spreadsheet templates are clumsy on mobile devices, require manual date maintenance, and offer no native analytics on conversion rates, stage drop-offs, or recruiter response times. Furthermore, general-purpose international trackers lack localized context such as Indonesian time zones (WIB/WITA/WIT), Rupiah currency denominations, and local job board categories.",
+      solution:
+        "Engineered a monolithic web application pairing Laravel 12 with Inertia.js v2 and a React 18/TypeScript frontend. The system features an ultra-fast logging flow requiring only company, role, and application date, while offering rich optional metadata (job types, remote/hybrid/WFO arrangements, salary ranges, HR contacts). It incorporates intelligent duplicate detection to prevent redundant submissions, an interview schedule manager with direct meeting launch buttons, and a dedicated domain analytics engine (ApplicationStatsService) paired with Recharts to deliver interactive funnel conversion rates, drop-off analysis, and 12-month application volume trends. Data privacy is enforced at the database policy level, backed by Neon Serverless PostgreSQL and verified by 53 automated Pest PHP tests.",
+      myRole:
+        "Creator & Full-Stack Engineer. Designed the PostgreSQL relational schema, implemented domain services, custom Action classes, and Backed Enum state machines in Laravel 12, built the reactive Inertia.js v2 + React 18 frontend with Tailwind CSS and Recharts, integrated Google OAuth authentication, and authored a 53-scenario automated test suite using Pest PHP.",
+      technologies: [
+        {
+          category: "Backend & Monolith Architecture",
+          items: [
+            "Laravel 12.x",
+            "PHP 8.2+",
+            "Inertia.js v2.0 (Modern Monolith)",
+            "ApplicationStatsService & Action Classes",
+            "PHP Backed Enums (ApplicationStatus, JobType, ScheduleMode)",
+          ],
+        },
+        {
+          category: "Frontend & Reactive UI",
+          items: [
+            "React 18",
+            "TypeScript 5.x",
+            "Tailwind CSS",
+            "Headless UI & Lucide Icons",
+            "Framer Motion, Canvas Confetti & DotLottie",
+            "Recharts Data Visualization",
+          ],
+        },
+        {
+          category: "Database & Cloud Infrastructure",
+          items: [
+            "Neon Serverless PostgreSQL",
+            "Eloquent ORM & Migrations",
+            "FrankenPHP (Caddy + PHP 8.2 Alpine)",
+            "Vercel Serverless / Docker Containers",
+          ],
+        },
+        {
+          category: "Security & Testing",
+          items: [
+            "Pest PHP 3 (53 Feature & Unit Tests, 100% Pass Rate)",
+            "Laravel Breeze & Google Socialite OAuth",
+            "Eloquent Authorization Policies (Per-User Data Isolation)",
+          ],
+        },
+      ],
+      architecture: {
+        summary:
+          "AppliedIn implements an Inertia.js v2 monolith architecture that combines the developer velocity and server-side robustness of Laravel 12 with the client-side responsiveness of React 18. Business logic is organized into single-responsibility Action classes and a dedicated ApplicationStatsService, completely decoupling statistical calculations from the HTTP delivery layer.",
+        components: [
+          {
+            layer: "Presentation Layer",
+            name: "React 18 + Inertia.js v2 Workspace",
+            description:
+              "SPA-like interactive interface offering client-side routing without full page refreshes, instant multi-filter search, and interactive modal drawers for rapid logging.",
+          },
+          {
+            layer: "Domain Service Layer",
+            name: "ApplicationStatsService & Status Actions",
+            description:
+              "Encapsulated service calculating hiring funnel progression, stage drop-off percentages, source performance metrics, and 12-month rolling trends.",
+          },
+          {
+            layer: "State & Workflow Layer",
+            name: "PHP Backed Enums with Funnel Rank Weights",
+            description:
+              "Strictly typed status machine (applied, screening, test, interview_hr, interview_user, offering, accepted, rejected, ghosted, withdrawn) with rank weighting that allows status skipping without corrupting funnel statistics.",
+          },
+          {
+            layer: "Data & Security Layer",
+            name: "Neon PostgreSQL & Eloquent Policies",
+            description:
+              "Serverless relational storage secured by strict Laravel Eloquent Policies, ensuring every query is scoped exclusively to the authenticated user.",
+          },
+        ],
+      },
+      keyFeatures: [
+        {
+          title: "Rapid Application Logging & Duplicate Guard",
+          description:
+            "Fast entry form requiring only mandatory company and position fields with automated warnings when recording an application at a previously applied company.",
+        },
+        {
+          title: "Schedule & Interview Manager",
+          description:
+            "Dedicated scheduling for technical tests, psychometrics, and HR/User interviews with direct meeting launch buttons (Google Meet, Zoom, Teams) or physical venue addresses.",
+        },
+        {
+          title: "Recruitment Funnel & Conversion Analytics",
+          description:
+            "Visual funnel tracking conversion rates from Applied to Offering, surfacing exact drop-off bottlenecks and ghosting ratios.",
+        },
+        {
+          title: "Job Board Source & Trend Breakdown",
+          description:
+            "Recharts-powered distribution charts identifying which job portals yield the highest interview conversion rates and tracking 12-month application activity.",
+        },
+        {
+          title: "Chronological Status History Timeline",
+          description:
+            "Vertical audit trail recording status transitions, stage notes, and dates for every phase of each application.",
+        },
+        {
+          title: "Full Indonesian Localization",
+          description:
+            "Built for the local market with WIB/WITA/WIT timezones, Rupiah currency formatting, and popular Indonesian job platforms (JobStreet, Glints, Kalibrr).",
+        },
+      ],
+      technicalDecisions: [
+        {
+          decision: "Inertia.js v2 Monolith over Separate REST/GraphQL API",
+          reason:
+            "Eliminates API versioning overhead and duplicate type definitions while delivering a fluid single-page application experience directly powered by Laravel controllers and Eloquent models.",
+        },
+        {
+          decision: "Rank-Weighted Status Enums for Funnel Math",
+          reason:
+            "Candidates often skip formal intermediate stages (e.g. going directly from Applied to Interview). Rank-weighted Enums ensure funnel analytics correctly infer preceding stage completion without manual backfilling.",
+        },
+        {
+          decision: "Neon Serverless PostgreSQL Storage",
+          reason:
+            "Provides elastic relational database scaling with automatic branching and zero-compute idle costs, connected through Laravel's standard PostgreSQL PDO driver.",
+        },
+        {
+          decision: "Comprehensive Pest PHP Test Coverage",
+          reason:
+            "53 automated unit and feature tests guaranteeing data isolation across users, accurate funnel math in ApplicationStatsService, and valid lifecycle state transitions.",
+        },
+      ],
+      outcome:
+        "Successfully launched to production at appliedin.web.id with 53 passing automated tests. Provides jobseekers with a high-clarity workspace that eliminates duplicate applications, prevents missed interviews, and delivers data-driven insights into their personal recruitment pipeline.",
+    },
+  },
+  {
     id: "enterprise-pos",
     slug: "pos-laravel",
-    number: "01",
+    number: "02",
     title: "Enterprise Multi-Branch POS",
     subtitle: "High-Concurrency Retail Engine & Inventory Control",
     tagline:
@@ -183,7 +351,7 @@ export const projects: Project[] = [
   {
     id: "roommaster",
     slug: "roommaster",
-    number: "02",
+    number: "03",
     title: "RoomMaster",
     subtitle: "Agentic AI × Hotel Management",
     tagline:
@@ -325,7 +493,7 @@ export const projects: Project[] = [
   {
     id: "mutiara-bangsa",
     slug: "mutiara-bangsa",
-    number: "03",
+    number: "04",
     title: "Mutiara Bangsa",
     subtitle: "AI-Powered E-Commerce & Retail Forecasting",
     tagline:
@@ -404,7 +572,7 @@ export const projects: Project[] = [
   {
     id: "migaskita",
     slug: "migaskita",
-    number: "04",
+    number: "05",
     title: "MigasKita",
     subtitle: "Enterprise Mobile HR & Geofencing Attendance",
     tagline:
@@ -484,7 +652,7 @@ export const projects: Project[] = [
   {
     id: "chandra-kirana-indonesia",
     slug: "chandra-kirana-indonesia",
-    number: "05",
+    number: "06",
     title: "CV Chandra Kirana Indonesia",
     subtitle: "Corporate Profile & Industrial Services",
     tagline:
